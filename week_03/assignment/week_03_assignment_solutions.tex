@@ -1,0 +1,224 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 20
+% CMPSC480_ITEM_IDS: 1,2,3,4,5
+\title[Module Project A Solutions]{Week 3 Module Project A: Search and Adversarial Agents}
+\subtitle{Integrating pathfinding with minimax, alpha-beta pruning, and evaluation}
+\author{CMPSC 480 - Instructor Solution Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\vspace{-0.35cm}
+\begin{center}
+\color{coursered}\bfseries Instructor material - do not distribute with the question deck
+\end{center}
+\end{frame}
+
+\begin{frame}{Solution overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large This instructor deck provides a complete matched solution and grading guidance.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Weeks 1-3: search formulation, A-star, minimax, alpha-beta, and evaluation
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}20 total\end{block}
+\begin{block}{Expected time}10-14 hours\end{block}
+\begin{block}{Submission}Repository, tests, and engineering report\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Instructor verification checklist}
+\small
+\begin{itemize}
+  \item Use Python 3.11 and NumPy only unless the prompt explicitly permits another package.
+  \item Preserve the published interfaces and make all tie-breaking deterministic.
+  \item State assumptions, validate inputs, and handle empty, terminal, and unreachable cases.
+  \item Include focused tests whose names explain the defect each test would expose.
+  \item Report measured evidence; do not replace experimental results with unsupported claims.
+  \item Do not mutate game states shared by sibling branches.
+  \item Return a legal action for every nonterminal state with at least one legal move.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Solution 1.a - Architecture and pathfinding (1 points)}
+\small
+\textbf{Question focus.} Draw the boundary among game state, search problem, pathfinder, and adversarial agent.
+
+\vspace{0.25cm}
+\answerlabel The state owns rules and legal transitions; the problem adapts a state to pathfinding; the pathfinder returns paths and metrics; the agent consumes immutable successor states and returns one action.
+\end{frame}
+
+\begin{frame}{Solution 1.b - Architecture and pathfinding (2 points)}
+\small
+\textbf{Question focus.} Implement BFS, DFS, and A-star behind one pathfinding interface.
+
+\vspace{0.25cm}
+\answerlabel The methods share expansion and reconstruction logic, differ only in frontier priority, terminate on cycles, and return explicit failure on unreachable goals.
+\end{frame}
+
+\begin{frame}{Solution 1.c - Architecture and pathfinding (1 points)}
+\small
+\textbf{Question focus.} Demonstrate path validity and deterministic tie-breaking.
+
+\vspace{0.25cm}
+\answerlabel Every adjacent state-action pair is revalidated by the domain. Equal priorities use a documented stable rule, and repeated runs produce identical paths.
+\end{frame}
+
+\begin{frame}{Solution 2.a - A-star heuristic (1 points)}
+\small
+\textbf{Question focus.} Define the heuristic and its units.
+
+\vspace{0.25cm}
+\answerlabel A valid answer uses a lower bound expressed in path-cost units, such as obstacle-ignoring Manhattan distance times the minimum legal step cost.
+\end{frame}
+
+\begin{frame}{Solution 2.b - A-star heuristic (1 points)}
+\small
+\textbf{Question focus.} Give an admissibility or consistency proof sketch.
+
+\vspace{0.25cm}
+\answerlabel Relaxing obstacles can only shorten the route, so the relaxed optimal cost is no greater than the true cost. For local consistency, show h(n) no greater than edge cost plus h of each successor.
+\end{frame}
+
+\begin{frame}{Solution 2.c - A-star heuristic (1 points)}
+\small
+\textbf{Question focus.} Compare A-star with h=0 on at least three maps.
+
+\vspace{0.25cm}
+\answerlabel Both configurations return equal optimal costs. The informative heuristic should usually expand no more nodes; exceptions caused by ties are explained.
+\end{frame}
+
+\begin{frame}{Solution 3.a - Minimax decision engine (2 points)}
+\small
+\textbf{Question focus.} Write minimax pseudocode with MAX, MIN, terminal, and cutoff cases.
+
+\vspace{0.25cm}
+\answerlabel Terminal utility is returned before a heuristic cutoff. MAX takes the largest child value, MIN takes the smallest, and the root returns the action paired with the best value.
+\end{frame}
+
+\begin{frame}{Solution 3.b - Minimax decision engine (2 points)}
+\small
+\textbf{Question focus.} Trace a depth-two tree with at least two actions per internal node.
+
+\vspace{0.25cm}
+\answerlabel The solution labels leaf utilities, computes each MIN value, then chooses the maximum at the root. All backed-up values and the selected action are shown.
+\end{frame}
+
+\begin{frame}{Solution 3.c - Minimax decision engine (1 points)}
+\small
+\textbf{Question focus.} Explain how depth is counted and how ties are broken.
+
+\vspace{0.25cm}
+\answerlabel Depth is defined consistently as plies from the root or remaining plies. A stable legal-action order chooses the first tied optimum so tests remain reproducible.
+\end{frame}
+
+\begin{frame}{Solution 4.a - Alpha-beta and evaluation (2 points)}
+\small
+\textbf{Question focus.} State the alpha and beta invariants and the pruning condition.
+
+\vspace{0.25cm}
+\answerlabel Alpha is MAX's best guaranteed lower bound; beta is MIN's best guaranteed upper bound. A branch can be pruned when alpha is at least beta because it cannot change the ancestor decision.
+\end{frame}
+
+\begin{frame}{Solution 4.b - Alpha-beta and evaluation (1 points)}
+\small
+\textbf{Question focus.} Verify equality with plain minimax across generated small trees.
+
+\vspace{0.25cm}
+\answerlabel For every tested tree and depth, minimax and alpha-beta return the same value and a tie-equivalent action. The test varies utilities and successor order.
+\end{frame}
+
+\begin{frame}{Solution 4.c - Alpha-beta and evaluation (1 points)}
+\small
+\textbf{Question focus.} Define an evaluation function as a weighted feature sum.
+
+\vspace{0.25cm}
+\answerlabel Features have stated perspective and scale, for example score difference, distance-to-objective, mobility, and threat. Positive weights favor MAX and terminal states bypass the heuristic.
+\end{frame}
+
+\begin{frame}{Solution 4.d - Alpha-beta and evaluation (1 points)}
+\small
+\textbf{Question focus.} Measure the effect of ordering and evaluation features.
+
+\vspace{0.25cm}
+\answerlabel The report compares expanded nodes under good and bad ordering and performs at least one feature ablation tied to decision quality.
+\end{frame}
+
+\begin{frame}{Solution 5.a - Integration and evidence (1 points)}
+\small
+\textbf{Question focus.} Run an end-to-end scenario that uses both pathfinding and adversarial choice.
+
+\vspace{0.25cm}
+\answerlabel The scenario makes the component handoff visible, validates every returned action, and records the chosen path and game decision.
+\end{frame}
+
+\begin{frame}{Solution 5.b - Integration and evidence (1 points)}
+\small
+\textbf{Question focus.} Test terminal roots, no legal actions, repeated states, and a narrow pruning window.
+
+\vspace{0.25cm}
+\answerlabel Each test states expected output and detects a distinct semantic, mutation, cycle, or bound-update defect.
+\end{frame}
+
+\begin{frame}{Solution 5.c - Integration and evidence (1 points)}
+\small
+\textbf{Question focus.} Report nodes expanded, prune count, decision value, and runtime.
+
+\vspace{0.25cm}
+\answerlabel Measurements use the same states, depth, hardware context, and tie order; conclusions distinguish correctness from speed.
+\end{frame}
+
+\begin{frame}{Edge-case reasoning and expected behavior}
+\small
+\begin{itemize}
+  \item Return terminal utility and no action without calling the evaluator.
+  \item Fail loudly or apply a documented pass rule; never return an arbitrary illegal action.
+  \item Pathfinding deduplicates state keys; adversarial search avoids unsafe transposition reuse unless depth and bounds are encoded.
+  \item Choose the first action in stable domain order.
+  \item Pruning is safe when alpha is greater than or equal to beta.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 1}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Architecture and pathfinding & 4 & Clean separation, deterministic behavior, and correct path costs. \\
+A-star heuristic & 3 & Heuristic is safe, informative, and experimentally supported. \\
+Minimax decision engine & 5 & Backups, player alternation, depth limits, and legal actions are correct. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 2}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Alpha-beta and evaluation & 5 & Bounds are updated correctly; evaluation features and evidence are sound. \\
+Integration and evidence & 3 & End-to-end correctness, boundary cases, and technical interpretation. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection exemplar}
+\small
+\answerlabel A strong response distinguishes pathfinding from game-state semantics, cites a minimal reproducer, identifies which contract was violated, and reports the regression test that now protects it.
+
+\vspace{0.25cm}
+\gradinglabel Award credit for a specific claim supported by technical evidence from the submitted work.
+\end{frame}
+
+\end{document}

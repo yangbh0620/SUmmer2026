@@ -1,0 +1,340 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 150
+% CMPSC480_ITEM_IDS: 1,2,3,4,5,6,7,8,9,10
+\title[Final Examination Solutions]{CMPSC 480 Comprehensive Final Examination}
+\subtitle{Weeks 1-15: methods, evidence, integration, and responsibility}
+\author{CMPSC 480 - Instructor Solution Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\vspace{-0.35cm}
+\begin{center}
+\color{coursered}\bfseries Instructor material - do not distribute with the question deck
+\end{center}
+\end{frame}
+
+\begin{frame}{Solution overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large This instructor deck provides a complete matched solution and grading guidance.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: All modules with emphasis on machine learning, evaluation, fairness, deployment, and cross-module integration
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}150 total\end{block}
+\begin{block}{Expected time}180 minutes\end{block}
+\begin{block}{Submission}Individual examination PDF\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Instructor verification checklist}
+\small
+\begin{itemize}
+  \item Work independently and show intermediate algebra, frontier state, or factor state.
+  \item One double-sided handwritten letter-size reference sheet is permitted.
+  \item A nonprogrammable calculator is permitted; networked devices and communication are prohibited.
+  \item State every tie-breaking, terminal, reward, and zero-division convention you use.
+  \item Answers receive credit for justified reasoning; an unsupported final number may receive little credit.
+  \item Academic integrity rules of the course and institution apply throughout the examination.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Solution 1.a - Search and heuristic guarantees (5 points)}
+\small
+\textbf{Question focus.} State admissibility and consistency formally.
+
+\vspace{0.25cm}
+\answerlabel Admissibility requires h(n)<=h-star(n). Consistency requires h(n)<=c(n,n-prime)+h(n-prime) for every edge and h(goal)=0.
+\end{frame}
+
+\begin{frame}{Solution 1.b - Search and heuristic guarantees (5 points)}
+\small
+\textbf{Question focus.} Can graph-search A* remain optimal with this heuristic? State the needed implementation behavior.
+
+\vspace{0.25cm}
+\answerlabel Yes with admissibility if nodes can be reopened when a cheaper g is found and the algorithm uses a correct termination condition. A closed-set implementation that never reopens can return suboptimal paths under inconsistency.
+\end{frame}
+
+\begin{frame}{Solution 1.c - Search and heuristic guarantees (5 points)}
+\small
+\textbf{Question focus.} Design a test that exposes missing reopening.
+
+\vspace{0.25cm}
+\answerlabel Create a graph where a state is first expanded through a worse route due to low f, then reached more cheaply later; verify A* with reopening matches UCS optimal cost while the defective closed implementation does not.
+\end{frame}
+
+\begin{frame}{Solution 2.a - Adversarial reasoning (5 points)}
+\small
+\textbf{Question focus.} Compute expectimax values and choose an action.
+
+\vspace{0.25cm}
+\answerlabel A has expected value 0.25(8)+0.75(0)=2; B has value 3, so expectimax chooses B.
+\end{frame}
+
+\begin{frame}{Solution 2.b - Adversarial reasoning (5 points)}
+\small
+\textbf{Question focus.} What would a worst-case MIN interpretation choose for A, and why is that a different model?
+
+\vspace{0.25cm}
+\answerlabel MIN assigns A the value min(8,0)=0. It models an adversary selecting the outcome, not an exogenous random event with known probabilities.
+\end{frame}
+
+\begin{frame}{Solution 2.c - Adversarial reasoning (5 points)}
+\small
+\textbf{Question focus.} Give two tests for a combined minimax-expectimax implementation.
+
+\vspace{0.25cm}
+\answerlabel Use probabilities summing to one with a hand-computed chance node, and use a deterministic probability-one outcome that must equal the corresponding child. Also verify terminal utility and stable action ties.
+\end{frame}
+
+\begin{frame}{Solution 3.a - MDPs and reinforcement learning (5 points)}
+\small
+\textbf{Question focus.} Compute the Q-learning target, TD error, and updated Q.
+
+\vspace{0.25cm}
+\answerlabel Target=-1+0.9(5)=3.5; delta=1.5; new Q=2+0.1(1.5)=2.15.
+\end{frame}
+
+\begin{frame}{Solution 3.b - MDPs and reinforcement learning (5 points)}
+\small
+\textbf{Question focus.} How would the terminal case differ?
+
+\vspace{0.25cm}
+\answerlabel The target is immediate reward -1, delta=-3, and new Q=2-0.3=1.7.
+\end{frame}
+
+\begin{frame}{Solution 3.c - MDPs and reinforcement learning (5 points)}
+\small
+\textbf{Question focus.} Compare information required by value iteration and Q-learning.
+
+\vspace{0.25cm}
+\answerlabel Value iteration needs explicit transition probabilities and rewards and performs expected backups over successors. Q-learning uses sampled transitions without the model but needs exploration and sufficient experience; it learns off-policy toward a greedy target.
+\end{frame}
+
+\begin{frame}{Solution 4.a - Bayesian inference (5 points)}
+\small
+\textbf{Question focus.} Compute P(disease|positive).
+
+\vspace{0.25cm}
+\answerlabel True-positive mass is 0.02(0.9)=0.018; false-positive mass is 0.98(0.1)=0.098; posterior is 0.018/0.116, approximately 0.1552.
+\end{frame}
+
+\begin{frame}{Solution 4.b - Bayesian inference (5 points)}
+\small
+\textbf{Question focus.} Explain how variable elimination avoids repeated enumeration.
+
+\vspace{0.25cm}
+\answerlabel It restricts evidence, multiplies all factors containing one hidden variable, sums that variable out once, and reuses the resulting smaller factor for remaining query values.
+\end{frame}
+
+\begin{frame}{Solution 4.c - Bayesian inference (5 points)}
+\small
+\textbf{Question focus.} Compare rejection sampling with likelihood weighting for rare evidence.
+
+\vspace{0.25cm}
+\answerlabel Rejection sampling discards almost all inconsistent samples and is inefficient. Likelihood weighting clamps evidence and weights samples by its likelihood, retaining samples but potentially suffering high weight variance.
+\end{frame}
+
+\begin{frame}{Solution 5.a - Regression and gradient descent (5 points)}
+\small
+\textbf{Question focus.} Compute the initial residual and gradient.
+
+\vspace{0.25cm}
+\answerlabel Residual is [-1,-3,-5]. X\textasciicircum{}T residual=[-9,-13]; divide by m=3 to obtain gradient [-3,-13/3].
+\end{frame}
+
+\begin{frame}{Solution 5.b - Regression and gradient descent (5 points)}
+\small
+\textbf{Question focus.} With alpha=0.1, compute the new weights.
+
+\vspace{0.25cm}
+\answerlabel w\_new=[0.3,13/30], approximately [0.3,0.4333].
+\end{frame}
+
+\begin{frame}{Solution 5.c - Regression and gradient descent (5 points)}
+\small
+\textbf{Question focus.} Explain how feature scaling and collinearity affect optimization or solving.
+
+\vspace{0.25cm}
+\answerlabel Scaling reduces elongated loss contours and supports a common learning rate. Collinearity makes X\textasciicircum{}T X singular or ill-conditioned, producing unstable coefficients; use a stable least-squares solver, pseudoinverse, or regularization.
+\end{frame}
+
+\begin{frame}{Solution 6.a - Neural networks and backpropagation (5 points)}
+\small
+\textbf{Question focus.} Give Z, A, dW, and db shapes.
+
+\vspace{0.25cm}
+\answerlabel Z and A are 3 by 20; dW=delta A\_prev\textasciicircum{}T/m is 3 by 4; db=sum delta across examples with keepdims is 3 by 1.
+\end{frame}
+
+\begin{frame}{Solution 6.b - Neural networks and backpropagation (5 points)}
+\small
+\textbf{Question focus.} Write the previous-layer delta formula and shape.
+
+\vspace{0.25cm}
+\answerlabel delta\_prev=(W\textasciicircum{}T delta) elementwise f\_prime(Z\_prev); W\textasciicircum{}T delta is 4 by 20, matching the previous layer.
+\end{frame}
+
+\begin{frame}{Solution 6.c - Neural networks and backpropagation (5 points)}
+\small
+\textbf{Question focus.} Describe a two-sided gradient check and one limitation.
+
+\vspace{0.25cm}
+\answerlabel Perturb each parameter by plus and minus epsilon, compute the centered finite difference, and compare with backprop by relative error. It is expensive and can be unreliable at nondifferentiable points such as ReLU zero.
+\end{frame}
+
+\begin{frame}{Solution 7.a - Classification and regularization (5 points)}
+\small
+\textbf{Question focus.} Compute sigmoid(z) and cross-entropy loss.
+
+\vspace{0.25cm}
+\answerlabel Since exp(z)=4, sigmoid(z)=4/(1+4)=0.8. For y=1, loss=-log(0.8), approximately 0.2231.
+\end{frame}
+
+\begin{frame}{Solution 7.b - Classification and regularization (5 points)}
+\small
+\textbf{Question focus.} Compute the L2 penalty and gradient addition.
+
+\vspace{0.25cm}
+\answerlabel Squared norm is 25; penalty=lambda*25/(2m)=1.25. Gradient addition is lambda w/m=[0.3,0.4], excluding the intercept.
+\end{frame}
+
+\begin{frame}{Solution 7.c - Classification and regularization (5 points)}
+\small
+\textbf{Question focus.} Explain why threshold 0.5 is not universally optimal.
+
+\vspace{0.25cm}
+\answerlabel Threshold choice trades false positives and false negatives and should reflect costs, capacity, and validation evidence; the probability midpoint ignores asymmetric consequences and prevalence.
+\end{frame}
+
+\begin{frame}{Solution 8.a - Evaluation and tuning (5 points)}
+\small
+\textbf{Question focus.} Compute accuracy, precision, recall, and F1.
+
+\vspace{0.25cm}
+\answerlabel Accuracy=(12+977)/1000=0.989; precision=12/20=0.6; recall=12/15=0.8; F1=2(0.6)(0.8)/1.4, approximately 0.6857.
+\end{frame}
+
+\begin{frame}{Solution 8.b - Evaluation and tuning (5 points)}
+\small
+\textbf{Question focus.} Training and validation error are both high and close. Diagnose and name one experiment.
+
+\vspace{0.25cm}
+\answerlabel This suggests underfitting or high bias. Test more capacity, improved features, weaker regularization, or corrected optimization while preserving the split.
+\end{frame}
+
+\begin{frame}{Solution 8.c - Evaluation and tuning (5 points)}
+\small
+\textbf{Question focus.} Give a valid hyperparameter workflow with k-fold CV.
+
+\vspace{0.25cm}
+\answerlabel Define ranges and metric, fit preprocessing and a fresh model inside each fold, compare means and spreads on fixed folds, lock one configuration, optionally refit under a predeclared rule, then evaluate the untouched test set once.
+\end{frame}
+
+\begin{frame}{Solution 9.a - Fairness and responsible deployment (5 points)}
+\small
+\textbf{Question focus.} Compute the equalized-odds gaps and interpret them.
+
+\vspace{0.25cm}
+\answerlabel Absolute TPR gap is 0.20 and FPR gap is 0.15; equalized odds is not satisfied, and A1 bears both more missed positives and more false positives under these rates.
+\end{frame}
+
+\begin{frame}{Solution 9.b - Fairness and responsible deployment (5 points)}
+\small
+\textbf{Question focus.} Explain why removing the protected attribute alone does not establish fairness.
+
+\vspace{0.25cm}
+\answerlabel Proxy variables, historical labels, sampling, measurement, and deployment feedback can reproduce group disparities. Audit disaggregated counts, data provenance, and consequences.
+\end{frame}
+
+\begin{frame}{Solution 9.c - Fairness and responsible deployment (5 points)}
+\small
+\textbf{Question focus.} Specify a complete shift monitor and response.
+
+\vspace{0.25cm}
+\answerlabel Define a feature-distance or population-stability metric against the release baseline, window and minimum count, alert threshold, model-risk owner, and actions such as investigation, human fallback, scope restriction, or rollback; confirm with delayed labeled performance.
+\end{frame}
+
+\begin{frame}{Solution 10.a - Cross-module integration (5 points)}
+\small
+\textbf{Question focus.} Define the component handoffs.
+
+\vspace{0.25cm}
+\answerlabel Sensor observations update a normalized hazard posterior; the posterior and observable state form fixed-size features; a learned model predicts remaining risk or cost; the planner or policy consumes that estimate while outputting only legal actions.
+\end{frame}
+
+\begin{frame}{Solution 10.b - Cross-module integration (5 points)}
+\small
+\textbf{Question focus.} State three component or end-to-end tests.
+
+\vspace{0.25cm}
+\answerlabel Compare posterior updates with enumeration, compare learned heuristic search with UCS on small maps, verify terminal and legal-action behavior, and run a fixed-seed end-to-end hazard scenario with expected path and safety invariants.
+\end{frame}
+
+\begin{frame}{Solution 10.c - Cross-module integration (5 points)}
+\small
+\textbf{Question focus.} Design a baseline, metrics, and limitation statement.
+
+\vspace{0.25cm}
+\answerlabel Use a fixed-prior plus hand-designed heuristic baseline under identical maps and seeds. Report path cost, expansions, hazard rate, success, posterior calibration or error, and variability. State that learned overestimation or shifted sensors can break optimality or safety and define a fallback.
+\end{frame}
+
+\begin{frame}{Edge-case reasoning and expected behavior}
+\small
+\begin{itemize}
+  \item Use stable logits loss.
+  \item Report the declared undefined or zero convention with counts.
+  \item Move the check point or state a subgradient.
+  \item Reopen safely or relinquish optimality and compare with UCS.
+  \item Use a transparent local fallback and do not fabricate results.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 1}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Search and heuristic guarantees & 15 & The answer distinguishes tree search, graph search, reopening, and evidence. \\
+Adversarial reasoning & 15 & Utilities, probability semantics, and method choice are correct. \\
+MDPs and reinforcement learning & 15 & Target, update, model requirements, and exploration are correct. \\
+Bayesian inference & 15 & Base rate, normalization, and evidence rarity are handled correctly. \\
+Regression and gradient descent & 15 & Vectorized arithmetic, scaling, and numerical reasoning are correct. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 2}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Neural networks and backpropagation & 15 & Matrix orientation, averaging, and verification are correct. \\
+Classification and regularization & 15 & Logistic and regularization calculations are correct. \\
+Evaluation and tuning & 15 & Counts, diagnostic logic, and data isolation are correct. \\
+Fairness and responsible deployment & 15 & Formal metrics and lifecycle response are complete. \\
+Cross-module integration & 15 & The design integrates methods and preserves or explicitly relinquishes guarantees. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection exemplar}
+\small
+\answerlabel A full-credit response names a concrete handoff or shared invariant and explains how it changes implementation evidence, guarantees, or responsible-use decisions.
+
+\vspace{0.25cm}
+\gradinglabel Award credit for a specific claim supported by technical evidence from the submitted work.
+\end{frame}
+
+\end{document}

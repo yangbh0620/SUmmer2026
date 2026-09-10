@@ -1,0 +1,140 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 20
+% CMPSC480_ITEM_IDS: 1,2,3,4
+\title[Quiz 2 Questions]{Quiz 2: Adversarial and Sequential Decision Making}
+\subtitle{Weeks 3-5}
+\author{CMPSC 480 - Student Question Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Assessment overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large Trace adversarial backups, solve a Bellman step, and apply a Q-learning update.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Weeks 3-5
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}20 total\end{block}
+\begin{block}{Expected time}35 minutes\end{block}
+\begin{block}{Submission}Individual PDF\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Learning objectives}
+\begin{itemize}
+  \item Trace minimax and pruning.
+  \item Interpret an MDP.
+  \item Perform Bellman and Q-learning updates.
+  \item Distinguish planning from learning.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Requirements checklist}
+\small
+\begin{itemize}
+  \item Work independently.
+  \item Show backed-up values and arithmetic.
+  \item State terminal conventions.
+  \item No electronic communication.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Task 1 - Minimax and alpha-beta (6 points)}
+\small
+A MAX root has MIN children A and B. A has leaves 3 and 5; B has leaves 2 and 9.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute the minimax value and selected branch. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Search A first. After B's first leaf 2, can B's second leaf be pruned? \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{c.}] Does pruning change the backed-up value? Explain. \hfill{\color{courseblue}\textbf{[2 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 2 - MDP backup (6 points)}
+\small
+From state s, action a reaches terminal +5 with probability 0.8 and state t with probability 0.2. The immediate reward is 0, gamma=0.9, and V(t)=2.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Write the Bellman action-value expression. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Compute Q(s,a). \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{c.}] Explain what value iteration maximizes. \hfill{\color{courseblue}\textbf{[2 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 3 - Q-learning (4 points)}
+\small
+Q(s,a)=1, reward=2, max next Q=3, gamma=0.5, and alpha=0.25.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute the nonterminal target and TD error. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Compute the updated Q value and state the terminal change. \hfill{\color{courseblue}\textbf{[2 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 4 - Planning versus learning (4 points)}
+\small
+Compare value iteration and Q-learning for the same gridworld.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] What information does each method require? \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Why must a Q-learning evaluation run use epsilon zero? \hfill{\color{courseblue}\textbf{[2 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Edge cases and defensive programming}
+\small
+\begin{itemize}
+  \item A minimax root is terminal.
+  \item An MDP action has probabilities that do not sum to one.
+  \item A Q-learning transition is terminal.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Submission instructions}
+\small
+\begin{itemize}
+  \item Show every backup and update.
+  \item State any convention needed for terminal reward.
+  \item Submit only the completed response PDF.
+\end{itemize}
+\vspace{0.2cm}
+\alert{Do not submit credentials, generated caches, or unapproved libraries.}
+\end{frame}
+
+\begin{frame}{Grading rubric}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+Minimax and alpha-beta & 6 & Tree trace. \\
+MDP backup & 6 & Expected-return calculation. \\
+Q-learning & 4 & One numerical update. \\
+Planning versus learning & 4 & Short explanation. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection prompt}
+In one sentence:
+
+State one reason a learned policy can differ from a planning oracle.
+\end{frame}
+
+\end{document}

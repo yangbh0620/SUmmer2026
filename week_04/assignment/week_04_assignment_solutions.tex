@@ -1,0 +1,163 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 10
+% CMPSC480_ITEM_IDS: 1,2,3,4
+\title[Week 4 Assignment Solutions]{Week 4 Assignment: Planning in a Stochastic Gridworld}
+\subtitle{MDP modeling, value iteration, policy iteration, and verification}
+\author{CMPSC 480 - Instructor Solution Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\vspace{-0.35cm}
+\begin{center}
+\color{coursered}\bfseries Instructor material - do not distribute with the question deck
+\end{center}
+\end{frame}
+
+\begin{frame}{Solution overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large This instructor deck provides a complete matched solution and grading guidance.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Week 4: MDPs, Bellman backups, value iteration, and policy iteration
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}10 total\end{block}
+\begin{block}{Expected time}6-8 hours\end{block}
+\begin{block}{Submission}Repository plus experiment memo\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Instructor verification checklist}
+\small
+\begin{itemize}
+  \item Use Python 3.11 and NumPy only unless the prompt explicitly permits another package.
+  \item Preserve the published interfaces and make all tie-breaking deterministic.
+  \item State assumptions, validate inputs, and handle empty, terminal, and unreachable cases.
+  \item Include focused tests whose names explain the defect each test would expose.
+  \item Report measured evidence; do not replace experimental results with unsupported claims.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Solution 1.a - MDP model (1 points)}
+\small
+\textbf{Question focus.} Define S, A, P, R, gamma, initial state, walls, and terminal states.
+
+\vspace{0.25cm}
+\answerlabel States are legal grid cells; actions are cardinal moves; intended motion has probability 0.8 and perpendicular slips 0.1 each. Blocked motion stays in place. Rewards and terminal semantics are stated, with gamma in [0,1).
+\end{frame}
+
+\begin{frame}{Solution 1.b - MDP model (1 points)}
+\small
+\textbf{Question focus.} Write validation tests for every state-action transition distribution.
+
+\vspace{0.25cm}
+\answerlabel For each legal nonterminal pair, successor probabilities are nonnegative and sum to one within tolerance; all successors are legal states. Terminal states expose no actions or a documented absorbing convention.
+\end{frame}
+
+\begin{frame}{Solution 2.a - Value iteration (1 points)}
+\small
+\textbf{Question focus.} Write the Bellman optimality backup used for each nonterminal state.
+
+\vspace{0.25cm}
+\answerlabel V\_new(s) is the maximum over actions of the sum over successors of P(s-prime|s,a) times [R(s,a,s-prime)+gamma V\_old(s-prime)]. Terminal values follow the declared reward convention.
+\end{frame}
+
+\begin{frame}{Solution 2.b - Value iteration (1 points)}
+\small
+\textbf{Question focus.} Use a copy of the previous value vector and stop when the maximum residual is below tolerance.
+
+\vspace{0.25cm}
+\answerlabel Synchronous updates read only V\_old. The residual is max\_s absolute(V\_new(s)-V\_old(s)); iteration count has a safety bound and tolerance is positive.
+\end{frame}
+
+\begin{frame}{Solution 2.c - Value iteration (1 points)}
+\small
+\textbf{Question focus.} Extract a deterministic greedy policy and report values for designated cells.
+
+\vspace{0.25cm}
+\answerlabel Each action is scored with the final Bellman lookahead; stable action order resolves ties. Reported cells match an independently computed oracle within tolerance.
+\end{frame}
+
+\begin{frame}{Solution 3.a - Policy iteration (1 points)}
+\small
+\textbf{Question focus.} Describe iterative policy evaluation for a fixed policy.
+
+\vspace{0.25cm}
+\answerlabel Repeatedly apply the Bellman expectation backup using only the current policy action until the evaluation residual is below tolerance.
+\end{frame}
+
+\begin{frame}{Solution 3.b - Policy iteration (1 points)}
+\small
+\textbf{Question focus.} Implement greedy improvement and state the stability condition.
+
+\vspace{0.25cm}
+\answerlabel For every nonterminal state choose an action maximizing one-step lookahead under the evaluated values. Stop when no chosen action changes under deterministic ties.
+\end{frame}
+
+\begin{frame}{Solution 3.c - Policy iteration (1 points)}
+\small
+\textbf{Question focus.} Compare the final policy and values with value iteration.
+
+\vspace{0.25cm}
+\answerlabel Optimal values agree within a declared numerical tolerance, and policies are equal or choose actions with equal optimal action value.
+\end{frame}
+
+\begin{frame}{Solution 4.a - Validation and analysis (1 points)}
+\small
+\textbf{Question focus.} Test gamma=0, a one-state terminal MDP, blocked slips, and a reward perturbation.
+
+\vspace{0.25cm}
+\answerlabel At gamma=0 only immediate expected reward matters. The terminal case is stable. Blocked slips accumulate probability on staying put. Increasing one terminal reward should not reduce optimal value in reachable states.
+\end{frame}
+
+\begin{frame}{Solution 4.b - Validation and analysis (1 points)}
+\small
+\textbf{Question focus.} Explain how gamma and slip probability change the policy in two experiments.
+
+\vspace{0.25cm}
+\answerlabel The answer compares controlled runs, reports values and actions, and links larger gamma to future rewards while larger slip can favor safer routes.
+\end{frame}
+
+\begin{frame}{Edge-case reasoning and expected behavior}
+\small
+\begin{itemize}
+  \item Return the terminal convention immediately.
+  \item Merge that probability into the stay-put successor.
+  \item Use documented stable action order.
+  \item Backups reduce to immediate expected reward.
+  \item Reject the configuration before iteration.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Grading rubric}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+MDP model & 2 & Probabilities normalize and terminal/wall semantics are explicit. \\
+Value iteration & 3 & Backups, convergence, and terminal handling are correct. \\
+Policy iteration & 3 & Evaluation/improvement loops and stopping rule are sound. \\
+Validation and analysis & 2 & Tests expose modeling errors and conclusions follow evidence. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection exemplar}
+\small
+\answerlabel A strong answer isolates a transition, reward, terminal, gamma, or slip convention, reports before-and-after values or policies, and explains why both solvers changed consistently.
+
+\vspace{0.25cm}
+\gradinglabel Award credit for a specific claim supported by technical evidence from the submitted work.
+\end{frame}
+
+\end{document}

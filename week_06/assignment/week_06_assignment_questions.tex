@@ -1,0 +1,143 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 10
+% CMPSC480_ITEM_IDS: 1,2,3,4
+\title[Week 6 Assignment Questions]{Week 6 Assignment: Linear Q-Function Approximation}
+\subtitle{Feature design, semi-gradient updates, and stability evidence}
+\author{CMPSC 480 - Student Question Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Assessment overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large Replace a Q-table with a fixed-size linear approximator and verify every update.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Week 6: function approximation, semi-gradients, and the deadly triad
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}10 total\end{block}
+\begin{block}{Expected time}6-8 hours\end{block}
+\begin{block}{Submission}Repository plus experiment memo\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Learning objectives}
+\begin{itemize}
+  \item Implement a fixed-length state-action feature map.
+  \item Compute Q values as vectorized dot products.
+  \item Apply terminal-aware semi-gradient Q-learning.
+  \item Demonstrate the one-hot tabular correspondence.
+  \item Monitor numerical stability across controlled runs.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Requirements checklist}
+\small
+\begin{itemize}
+  \item Use Python 3.11 and NumPy; do not use a library that implements the assessed algorithm.
+  \item Keep data, model, optimization, and evaluation responsibilities behind explicit interfaces.
+  \item Validate shapes, ranges, finite values, empty inputs, and terminal or degenerate cases.
+  \item Use deterministic seeds and record every configuration used for reported evidence.
+  \item Include focused tests and a README with exact reproduction commands.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Task 1 - Features and dimensions (2 points)}
+\small
+Design a feature map whose length is independent of the number of raw states.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Define at least four state-action features and justify their scales. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Prove by an executable assertion that parameter size does not grow when the environment map grows. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 2 - Linear values and policy (2 points)}
+\small
+Implement Q-hat and epsilon-greedy action selection over legal actions.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute Q-hat(s,a;w) and test a known vector by hand. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Specify training and evaluation tie behavior. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 3 - Semi-gradient update (4 points)}
+\small
+Implement the squared-TD-error semi-gradient rule with correct terminal masking.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Derive the update from one-half times squared TD error. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Compute an update for w=[0,0], f=[1,2], reward=1, gamma=0.5, max-next-Q=4, and alpha=0.1. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{c.}] State and test the terminal target. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 4 - Experiment and stability (2 points)}
+\small
+Compare feature sets and report evidence beyond episodic return.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Run one feature ablation and compare with a tabular small-state oracle. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Define an instability gate using at least three logged quantities. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Edge cases and defensive programming}
+\small
+\begin{itemize}
+  \item Zero feature vector.
+  \item Terminal next state.
+  \item Feature dimension mismatch.
+  \item All legal actions tie.
+  \item Weight or TD error becomes nonfinite.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Submission instructions}
+\small
+\begin{itemize}
+  \item Submit source, tests, README, configuration, and the requested report.
+  \item Provide one command that reproduces the primary result from a clean environment.
+  \item Exclude credentials, generated caches, and unlicensed data.
+\end{itemize}
+\vspace{0.2cm}
+\alert{Do not submit credentials, generated caches, or unapproved libraries.}
+\end{frame}
+
+\begin{frame}{Grading rubric}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+Features and dimensions & 2 & Feature implementation, dimensionality assertion, and feature table. \\
+Linear values and policy & 2 & Vectorized q\_value and deterministic evaluation tests. \\
+Semi-gradient update & 4 & Update method, derivation, and hand-computed tests. \\
+Experiment and stability & 2 & Ablation table, stability plots or summaries, and defensive tests. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection prompt}
+In 150-250 words:
+
+Identify one feature that generalized useful information and one feature that created coupling risk. Cite an ablation or trace.
+\end{frame}
+
+\end{document}

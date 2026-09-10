@@ -1,0 +1,334 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 10
+% CMPSC480_ITEM_IDS: 1,2,3,4
+% CMPSC480_SUBITEM_POINTS: 1=2,2=5,3=1,4=2
+\title[CMPSC 480 - Week 1 Lab]{Week 1 Code Lab}
+\subtitle{Environment Setup and Your First Agent/Problem Skeleton}
+\author{CMPSC 480 - Student Question Deck}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Assignment overview}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.58\textwidth}
+      \Large
+      Build a verified Python development environment and a reusable
+      agent/problem abstraction for a small gridworld.
+
+      \vspace{0.45cm}
+      \normalsize
+      This is a tooling and representation lab. You will not implement a
+      search algorithm yet.
+    \end{column}
+    \begin{column}{0.37\textwidth}
+      \begin{block}{Expected effort}
+        2-3 hours
+      \end{block}
+      \begin{block}{Points}
+        10 total
+      \end{block}
+      \begin{block}{Submission}
+        Git repository archive or repository link
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Learning goals}
+  \begin{itemize}
+    \item Verify a reproducible Python, NumPy, Jupyter, and Git environment.
+    \item Map a formal search problem onto a concrete Python interface.
+    \item Represent states as immutable, hashable values.
+    \item Define legal actions, state transitions, a goal test, and step costs.
+    \item Use validation, type hints, docstrings, and unit tests from the start.
+    \item Create abstractions that can be extended in Week 2 without redesign.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Required repository structure}
+  \begin{block}{Submit this structure}
+    \ttfamily
+    week01-agent-skeleton/\par
+    \hspace{0.45cm}README.md\par
+    \hspace{0.45cm}verify\_environment.py\par
+    \hspace{0.45cm}src/\par
+    \hspace{0.9cm}\_\_init\_\_.py\par
+    \hspace{0.9cm}agent.py\par
+    \hspace{0.9cm}problem.py\par
+    \hspace{0.45cm}tests/\par
+    \hspace{0.9cm}test\_problem.py
+  \end{block}
+  \vspace{0.25cm}
+  \begin{itemize}
+    \item The repository must contain at least one meaningful Git commit.
+    \item The README must state the Python version and exact test command.
+    \item Do not commit virtual environments, cache folders, or credentials.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Checklist - Environment and structure}
+  \begin{enumerate}
+    \item \textbf{Environment report:} \texttt{verify\_environment.py} reports
+      Python, NumPy, Jupyter, and Git status.
+    \item \textbf{Version enforcement:} the script exits unsuccessfully when
+      Python is older than 3.10 or a required package is unavailable.
+    \item \textbf{Git evidence:} the script confirms that it runs inside a Git
+      repository with at least one commit.
+    \item \textbf{State contract:} every grid state is immutable, hashable, and
+      comparable by value.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Checklist - Behavior and quality}
+  \begin{enumerate}
+    \setcounter{enumi}{4}
+    \item \textbf{Problem interface:} implement
+      \texttt{initial\_state()}, \texttt{actions(state)},
+      \texttt{result(state, action)}, \texttt{goal\_test(state)}, and
+      \texttt{step\_cost(state, action, next\_state)}.
+    \item \textbf{Defensive behavior:} reject malformed states and illegal
+      actions with precise exceptions; never mutate a caller-provided state.
+    \item \textbf{Agent interface:} define an extensible \texttt{Agent} base
+      class with an \texttt{act(percept)} contract.
+    \item \textbf{Verification and documentation:} provide type hints,
+      public-method docstrings, and at least five focused unit tests.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{The toy domain}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \begin{block}{Gridworld}
+        Use a rectangular grid with:
+        \begin{itemize}
+          \item integer coordinates \((row, column)\),
+          \item four actions: up, down, left, right,
+          \item optional blocked cells,
+          \item one initial cell and one goal cell,
+          \item unit cost for every legal move.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{block}{Required conventions}
+        \begin{itemize}
+          \item The upper-left cell is \((0,0)\).
+          \item Rows increase downward.
+          \item Columns increase to the right.
+          \item \texttt{actions(state)} returns an empty list when no move is legal.
+          \item The Week 1 code contains no search loop.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Task 1 - Environment verification (2 points)}
+  Create \texttt{verify\_environment.py}. A successful run must:
+  \begin{enumerate}
+    \item print the complete Python version;
+    \item reject Python versions earlier than 3.10;
+    \item print installed NumPy and Jupyter versions;
+    \item confirm that the current directory is inside a Git work tree;
+    \item report a positive commit count; and
+    \item exit with status code zero only when every check passes.
+  \end{enumerate}
+  \vspace{0.25cm}
+  \keyidea{The output must be machine-checkable: use stable labels and return
+  a nonzero process status for a failed requirement.}
+\end{frame}
+
+\begin{frame}{Task 2 - Problem abstraction (5 points)}
+  Implement a concrete \texttt{GridProblem} that owns the domain configuration
+  and exposes the required search-problem operations.
+
+  \vspace{0.3cm}
+  \begin{itemize}
+    \item Validate dimensions, initial state, goal state, and blocked cells.
+    \item Return legal actions in a documented deterministic order.
+    \item Return a new immutable state from \texttt{result}.
+    \item Reject an action that is not legal in the supplied state.
+    \item Make the goal test return a real Boolean value.
+    \item Return a positive numeric step cost only for a legal transition.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Task 3 - Agent abstraction (1 point)}
+  Create an \texttt{Agent} base class with this public contract:
+
+  \vspace{0.35cm}
+  \begin{block}{act(percept)}
+    Accept the agent's current percept and return the next action selected by a
+    concrete subclass.
+  \end{block}
+
+  \begin{itemize}
+    \item The base implementation must not pretend to choose an action.
+    \item Document the expected percept and action types.
+    \item Design the interface so Week 2 search agents can subclass it.
+    \item Do not implement BFS, DFS, UCS, Greedy Best-First Search, or A-star.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Task 4 - Contract tests and repository quality (2 points)}
+  Provide at least five focused tests. Your suite must include:
+  \begin{itemize}
+    \item a known legal transition;
+    \item a corner or blocked-cell action set;
+    \item an illegal-action exception;
+    \item a goal-test success and failure;
+    \item evidence that a state can be used as a set member or dictionary key;
+    \item a domain with no legal actions;
+    \item at least one malformed-input rejection; and
+    \item a reproducible README with setup and test commands, plus a clean,
+      meaningful Git commit.
+  \end{itemize}
+
+  \vspace{0.25cm}
+  You may combine closely related assertions in one test, but each failure must
+  remain easy to diagnose.
+\end{frame}
+
+\begin{frame}[fragile]{Starter code - state and action types}
+\begin{lstlisting}
+from __future__ import annotations
+
+from enum import Enum
+from typing import TypeAlias
+
+State: TypeAlias = tuple[int, int]
+
+
+class Action(Enum):
+    UP = (-1, 0)
+    DOWN = (1, 0)
+    LEFT = (0, -1)
+    RIGHT = (0, 1)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Starter code - problem interface}
+\begin{lstlisting}
+class GridProblem:
+    def initial_state(self) -> State:
+        raise NotImplementedError
+
+    def actions(self, state: State) -> list[Action]:
+        raise NotImplementedError
+
+    def result(self, state: State, action: Action) -> State:
+        raise NotImplementedError
+
+    def goal_test(self, state: State) -> bool:
+        raise NotImplementedError
+
+    def step_cost(
+        self, state: State, action: Action, next_state: State
+    ) -> float:
+        raise NotImplementedError
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Starter code - agent interface}
+\begin{lstlisting}
+from abc import ABC, abstractmethod
+from typing import Generic, TypeVar
+
+PerceptT = TypeVar("PerceptT")
+ActionT = TypeVar("ActionT")
+
+
+class Agent(ABC, Generic[PerceptT, ActionT]):
+    @abstractmethod
+    def act(self, percept: PerceptT) -> ActionT:
+        """Return the next action for the supplied percept."""
+        raise NotImplementedError
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Edge cases and defensive-programming rules}
+  \begin{itemize}
+    \item A state outside the grid is malformed even if its tuple shape is valid.
+    \item A blocked cell is not a valid current, initial, goal, or next state.
+    \item \texttt{result} must reject an action not returned by
+      \texttt{actions(state)}.
+    \item \texttt{goal\_test} must not silently accept malformed input.
+    \item A one-cell grid may have an empty action list and may begin at the goal.
+    \item State values must remain safe as dictionary keys after every operation.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Submission instructions}
+  \begin{enumerate}
+    \item Run \texttt{python verify\_environment.py} from the repository root.
+    \item Run the complete test suite using the command documented in README.
+    \item Confirm that generated caches and virtual environments are ignored.
+    \item Commit all required source and test files with a meaningful message.
+    \item Submit the repository link or archive through the course system.
+  \end{enumerate}
+
+  \vspace{0.3cm}
+  \begin{alertblock}{Do not submit}
+    API keys, access tokens, editor settings, virtual environments, or code for
+    any search algorithm.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Grading rubric - Correctness (8 points)}
+  \scriptsize
+  \begin{tabularx}{\textwidth}{>{\bfseries}p{0.27\textwidth} c X}
+    \toprule
+    Requirement & Points & Evidence \\
+    \midrule
+    Environment verification & 2 & Versions, Git status, commit count, and
+      meaningful failure status \\
+    Immutable state model & 1 & Hashable value semantics with no caller-visible mutation \\
+    Legal actions and transitions & 2 & Correct boundaries, blocked cells, and
+      deterministic actions \\
+    Goal test and step cost & 1 & Correct Boolean result and legal unit-cost transition \\
+    Defensive validation & 1 & Precise rejection of malformed states and illegal actions \\
+    Agent abstraction & 1 & Extensible, documented \texttt{act} contract \\
+    \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\begin{frame}{Rubric - Verification and quality (2 points)}
+  \scriptsize
+  \begin{tabularx}{\textwidth}{>{\bfseries}p{0.27\textwidth} c X}
+    \toprule
+    Requirement & Points & Evidence \\
+    \midrule
+    Focused unit tests & 1 & Required normal, boundary, illegal, no-action,
+      hashability, and malformed cases \\
+    Documentation and repository quality & 1 & Type hints, docstrings, README,
+      clean structure, and meaningful commit \\
+    \midrule
+    \textbf{Total} & \textbf{10} & \\
+    \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection prompt}
+  In 150-250 words:
+
+  \vspace{0.35cm}
+  \begin{enumerate}
+    \item Map the formal search-problem components - initial state, actions,
+      transition model, goal test, and path cost - onto your class design.
+    \item Identify one ambiguity you resolved while defining the gridworld contract.
+    \item Explain why your state representation will work with an explored set
+      in next week's graph-search implementation.
+  \end{enumerate}
+
+  \vspace{0.3cm}
+  Submit the response in \texttt{README.md}.
+\end{frame}
+
+\end{document}

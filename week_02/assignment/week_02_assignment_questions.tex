@@ -1,0 +1,153 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 10
+% CMPSC480_ITEM_IDS: 1,2,3,4
+\title[Week 2 Assignment Questions]{Week 2 Assignment: A Unified Search Engine}
+\subtitle{BFS, DFS, UCS, and A-star behind one tested graph-search core}
+\author{CMPSC 480 - Student Question Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Assessment overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large Implement and compare four search strategies while preserving one domain contract.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Weeks 1-2: problem formulation, graph search, costs, heuristics, and testing
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}10 total\end{block}
+\begin{block}{Expected time}6-8 hours\end{block}
+\begin{block}{Submission}Repository plus PDF report\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Learning objectives}
+\begin{itemize}
+  \item Implement BFS, DFS, UCS, and A-star through a shared frontier abstraction.
+  \item Use state keys and best-cost bookkeeping correctly in cyclic graphs.
+  \item Justify admissibility and consistency of a grid heuristic.
+  \item Compare strategies with solution-cost and search-effort measurements.
+  \item Design edge-case tests that distinguish algorithmic guarantees.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Requirements checklist}
+\small
+\begin{itemize}
+  \item Use Python 3.11 and NumPy only unless the prompt explicitly permits another package.
+  \item Preserve the published interfaces and make all tie-breaking deterministic.
+  \item State assumptions, validate inputs, and handle empty, terminal, and unreachable cases.
+  \item Include focused tests whose names explain the defect each test would expose.
+  \item Report measured evidence; do not replace experimental results with unsupported claims.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Task 1 - Shared search contract (2 points)}
+\small
+Define the problem, node, result, and frontier interfaces before implementing a strategy.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Specify the required fields and methods of SearchProblem, Node, and SearchResult. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Define an immutable state-key policy and list two input validation rules. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 2 - BFS and DFS policies (2 points)}
+\small
+Implement breadth-first and depth-first graph search by changing only frontier removal order.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Explain the exact frontier and explored-set behavior for BFS and DFS. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Give one test that separates BFS from DFS and one cyclic test that proves termination. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 3 - UCS and A-star - part 1 (4 points)}
+\small
+Add cost-sensitive search and demonstrate that cheaper rediscovery replaces a worse frontier path.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] State the priority used by UCS and A-star and specify when the goal test occurs. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Trace a graph where A is first reached with cost 5 and later through B with cost 2. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{c.}] Define Manhattan distance for a four-neighbor unit-cost grid and prove admissibility. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 3 - UCS and A-star - part 2 (4 points)}
+\small
+Add cost-sensitive search and demonstrate that cheaper rediscovery replaces a worse frontier path.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{d.}] Prove consistency of Manhattan distance for each legal edge. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 4 - Experiments and defensive tests (2 points)}
+\small
+Evaluate all strategies on common instances and explain differences using theory.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Report path cost, generated nodes, expanded nodes, and maximum frontier for at least three maps. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Include no-solution, single-cell, cheaper-rediscovery, and scale tests and state the bug each detects. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Edge cases and defensive programming}
+\small
+\begin{itemize}
+  \item The initial state already satisfies the goal test.
+  \item The graph contains a reachable cycle but no goal.
+  \item A state is rediscovered through a strictly cheaper path.
+  \item Two frontier entries have equal priority and require deterministic ties.
+  \item The heuristic returns zero everywhere, reducing A-star to UCS.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Submission instructions}
+\small
+\begin{itemize}
+  \item Submit source, tests, and a README containing the exact test command.
+  \item Include a PDF result table and a short explanation of every surprising measurement.
+  \item Tag the final commit and ensure a clean clone reproduces the tests.
+\end{itemize}
+\vspace{0.2cm}
+\alert{Do not submit credentials, generated caches, or unapproved libraries.}
+\end{frame}
+
+\begin{frame}{Grading rubric}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+Shared search contract & 2 & Typed interfaces, validation, and a deterministic result schema. \\
+BFS and DFS policies & 2 & Working FIFO and LIFO policies plus trace tests. \\
+UCS and A-star & 4 & Priority-frontier implementation, heuristic, and correctness traces. \\
+Experiments and defensive tests & 2 & Reproducible result table, tests, and concise analysis. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection prompt}
+In 150-200 words:
+
+Identify one implementation choice that affected a theoretical guarantee. Cite a failing or passing test and explain what you changed.
+\end{frame}
+
+\end{document}

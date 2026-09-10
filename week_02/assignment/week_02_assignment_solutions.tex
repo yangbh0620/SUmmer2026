@@ -1,0 +1,163 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 10
+% CMPSC480_ITEM_IDS: 1,2,3,4
+\title[Week 2 Assignment Solutions]{Week 2 Assignment: A Unified Search Engine}
+\subtitle{BFS, DFS, UCS, and A-star behind one tested graph-search core}
+\author{CMPSC 480 - Instructor Solution Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\vspace{-0.35cm}
+\begin{center}
+\color{coursered}\bfseries Instructor material - do not distribute with the question deck
+\end{center}
+\end{frame}
+
+\begin{frame}{Solution overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large This instructor deck provides a complete matched solution and grading guidance.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Weeks 1-2: problem formulation, graph search, costs, heuristics, and testing
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}10 total\end{block}
+\begin{block}{Expected time}6-8 hours\end{block}
+\begin{block}{Submission}Repository plus PDF report\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Instructor verification checklist}
+\small
+\begin{itemize}
+  \item Use Python 3.11 and NumPy only unless the prompt explicitly permits another package.
+  \item Preserve the published interfaces and make all tie-breaking deterministic.
+  \item State assumptions, validate inputs, and handle empty, terminal, and unreachable cases.
+  \item Include focused tests whose names explain the defect each test would expose.
+  \item Report measured evidence; do not replace experimental results with unsupported claims.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Solution 1.a - Shared search contract (1 points)}
+\small
+\textbf{Question focus.} Specify the required fields and methods of SearchProblem, Node, and SearchResult.
+
+\vspace{0.25cm}
+\answerlabel SearchProblem exposes initial\_state, is\_goal, successors, and step cost. Node stores state, parent, action, depth, and accumulated cost. SearchResult reports path, cost, generated count, expanded count, and maximum frontier size.
+\end{frame}
+
+\begin{frame}{Solution 1.b - Shared search contract (1 points)}
+\small
+\textbf{Question focus.} Define an immutable state-key policy and list two input validation rules.
+
+\vspace{0.25cm}
+\answerlabel State keys must be hashable, stable, and based only on the world configuration. Validation must reject nonpositive UCS/A-star step costs and malformed successors; deterministic successor order must be documented.
+\end{frame}
+
+\begin{frame}{Solution 2.a - BFS and DFS policies (1 points)}
+\small
+\textbf{Question focus.} Explain the exact frontier and explored-set behavior for BFS and DFS.
+
+\vspace{0.25cm}
+\answerlabel BFS removes the oldest frontier entry and DFS removes the newest. A state is expanded at most once; parent links remain on nodes so the returned action sequence can be reconstructed.
+\end{frame}
+
+\begin{frame}{Solution 2.b - BFS and DFS policies (1 points)}
+\small
+\textbf{Question focus.} Give one test that separates BFS from DFS and one cyclic test that proves termination.
+
+\vspace{0.25cm}
+\answerlabel A branching graph with shallow and deep goals exposes FIFO versus LIFO behavior. A two-node cycle with an unreachable goal must terminate with failure and finite expansion counts.
+\end{frame}
+
+\begin{frame}{Solution 3.a - UCS and A-star (1 points)}
+\small
+\textbf{Question focus.} State the priority used by UCS and A-star and specify when the goal test occurs.
+
+\vspace{0.25cm}
+\answerlabel UCS orders by g and A-star by f=g+h. The goal is accepted when removed at minimum priority, not merely when generated.
+\end{frame}
+
+\begin{frame}{Solution 3.b - UCS and A-star (1 points)}
+\small
+\textbf{Question focus.} Trace a graph where A is first reached with cost 5 and later through B with cost 2.
+
+\vspace{0.25cm}
+\answerlabel The best-cost map changes best[A] from 5 to 2. The stale cost-5 entry is skipped when removed, or it is decreased in a frontier supporting decrease-key.
+\end{frame}
+
+\begin{frame}{Solution 3.c - UCS and A-star (1 points)}
+\small
+\textbf{Question focus.} Define Manhattan distance for a four-neighbor unit-cost grid and prove admissibility.
+
+\vspace{0.25cm}
+\answerlabel The heuristic is the absolute row difference plus absolute column difference. Every legal move changes this quantity by at most one, so any path needs at least that many moves; therefore it never exceeds optimal remaining cost.
+\end{frame}
+
+\begin{frame}{Solution 3.d - UCS and A-star (1 points)}
+\small
+\textbf{Question focus.} Prove consistency of Manhattan distance for each legal edge.
+
+\vspace{0.25cm}
+\answerlabel For adjacent states n and n-prime, the triangle inequality gives h(n) at most 1 plus h(n-prime). Since each step costs one, h(n) at most c(n,n-prime)+h(n-prime), which is consistency.
+\end{frame}
+
+\begin{frame}{Solution 4.a - Experiments and defensive tests (1 points)}
+\small
+\textbf{Question focus.} Report path cost, generated nodes, expanded nodes, and maximum frontier for at least three maps.
+
+\vspace{0.25cm}
+\answerlabel A full-credit table identifies the map and deterministic tie rule, reports all four metrics for every strategy, and checks returned paths independently.
+\end{frame}
+
+\begin{frame}{Solution 4.b - Experiments and defensive tests (1 points)}
+\small
+\textbf{Question focus.} Include no-solution, single-cell, cheaper-rediscovery, and scale tests and state the bug each detects.
+
+\vspace{0.25cm}
+\answerlabel No-solution checks graceful failure; single-cell checks immediate success; cheaper rediscovery checks cost updates; scale checks asymptotic memory and performance without changing correctness.
+\end{frame}
+
+\begin{frame}{Edge-case reasoning and expected behavior}
+\small
+\begin{itemize}
+  \item Return an empty action path with cost zero and no unnecessary expansion.
+  \item The explored or best-cost map prevents infinite repetition and returns explicit failure.
+  \item Replace the recorded best cost and ignore any stale expensive frontier entry.
+  \item Use a monotonic insertion counter after the primary priority.
+  \item A-star with h=0 must match UCS solution cost and expansion behavior modulo ties.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Grading rubric}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Shared search contract & 2 & Interfaces separate state from node metadata and reject invalid costs. \\
+BFS and DFS policies & 2 & Correct ordering, cycle termination, and path reconstruction. \\
+UCS and A-star & 4 & Correct priorities, updates, goal timing, and heuristic reasoning. \\
+Experiments and defensive tests & 2 & Evidence includes costs, effort, edge cases, and justified conclusions. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection exemplar}
+\small
+\answerlabel A strong reflection names a concrete rule, such as testing goals on removal or updating a cheaper duplicate, connects it to an optimality assumption, and cites reproducible test evidence.
+
+\vspace{0.25cm}
+\gradinglabel Award credit for a specific claim supported by technical evidence from the submitted work.
+\end{frame}
+
+\end{document}

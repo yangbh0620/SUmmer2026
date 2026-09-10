@@ -1,0 +1,117 @@
+% Shared CMPSC 480 Beamer preamble.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs,array,tabularx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+% Ignore only negligible TeX box diagnostics that are below visual tolerance.
+% Larger layout defects still appear in the build log and in rendered QA.
+\vfuzz=3pt
+\hbadness=2000
+
+\definecolor{courseink}{HTML}{111111}
+\definecolor{coursegray}{HTML}{EDEDED}
+\definecolor{courserule}{HTML}{B8BCC4}
+\definecolor{courseblue}{HTML}{3D8DFF}
+\definecolor{courselightblue}{HTML}{D0EDFA}
+\definecolor{coursemuted}{HTML}{5C6470}
+\definecolor{coursegreen}{HTML}{0B7A53}
+\definecolor{coursered}{HTML}{B3261E}
+
+\usetheme{default}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamersize{text margin left=0.65cm,text margin right=0.65cm}
+
+\setbeamercolor{normal text}{fg=courseink,bg=white}
+\setbeamercolor{frametitle}{fg=courseink,bg=white}
+\setbeamercolor{title}{fg=courseink,bg=white}
+\setbeamercolor{subtitle}{fg=coursemuted,bg=white}
+\setbeamercolor{structure}{fg=courseblue}
+\setbeamercolor{alerted text}{fg=coursered}
+\setbeamercolor{block title}{fg=courseink,bg=courselightblue}
+\setbeamercolor{block body}{fg=courseink,bg=coursegray}
+\setbeamercolor{example text}{fg=coursegreen}
+
+\setbeamerfont{title}{size=\fontsize{25}{29}\selectfont,series=\bfseries}
+\setbeamerfont{subtitle}{size=\fontsize{13}{16}\selectfont}
+\setbeamerfont{frametitle}{size=\fontsize{19}{22}\selectfont,series=\bfseries}
+\setbeamerfont{normal text}{size=\fontsize{11}{14}\selectfont}
+\setbeamerfont{footline}{size=\fontsize{7.5}{9}\selectfont}
+
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  % Use content-driven height so a long assessment title can wrap without
+  % being clipped by a fixed-height title bar.
+  \begin{beamercolorbox}[wd=\paperwidth,sep=0.17cm,leftskip=0.48cm,rightskip=0.48cm]{frametitle}
+    \insertframetitle
+  \end{beamercolorbox}
+  \vspace{-0.08cm}
+  {\color{courserule}\rule{\textwidth}{0.35pt}}
+}
+
+\setbeamertemplate{footline}{%
+  \leavevmode
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.6ex,dp=1.1ex,leftskip=.65cm,rightskip=.65cm]{author in head/foot}
+    \color{coursemuted}\insertshorttitle\hfill\insertframenumber/\inserttotalframenumber
+  \end{beamercolorbox}
+}
+
+\setbeamertemplate{itemize item}{\color{courseblue}\small$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{courseblue}\scriptsize$\bullet$}
+\setbeamertemplate{enumerate item}{\color{courseblue}\insertenumlabel.}
+
+\lstdefinestyle{coursepython}{
+  language=Python,
+  basicstyle=\ttfamily\fontsize{8.5}{10}\selectfont,
+  keywordstyle=\color{courseblue}\bfseries,
+  commentstyle=\color{coursemuted}\itshape,
+  stringstyle=\color{coursegreen},
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  rulecolor=\color{courserule},
+  backgroundcolor=\color{coursegray},
+  breaklines=true,
+  tabsize=4,
+  xleftmargin=0.15cm,
+  xrightmargin=0.15cm,
+  framexleftmargin=0.15cm,
+  framexrightmargin=0.15cm
+}
+\lstset{style=coursepython}
+
+\newcommand{\points}[1]{\hfill{\color{courseblue}\textbf{[#1 points]}}}
+\newcommand{\deliverable}[1]{\textbf{\color{courseblue}#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\keyidea}[1]{%
+  \begin{beamercolorbox}[rounded=false,sep=0.55em,wd=\linewidth]{block body}
+    \textbf{Key idea.} #1
+  \end{beamercolorbox}
+}
+\newcommand{\answerlabel}{\textbf{\color{coursegreen}Answer.}\ }
+\newcommand{\gradinglabel}{\textbf{\color{courseblue}Grading guidance.}\ }
+
+\newenvironment{questionblock}[1]
+  {\begin{block}{#1}}
+  {\end{block}}
+
+\newenvironment{solutionblock}[1]
+  {\begin{block}{#1}}
+  {\end{block}}
+
+\AtBeginSection[]{
+  \begin{frame}
+    \vfill
+    {\usebeamerfont{title}\color{courseink}\insertsectionhead\par}
+    \vspace{0.4cm}
+    {\color{courseblue}\rule{0.32\paperwidth}{3pt}}
+    \vfill
+  \end{frame}
+}

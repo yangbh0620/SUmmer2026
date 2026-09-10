@@ -1,0 +1,190 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 20
+% CMPSC480_ITEM_IDS: 1,2,3,4,5
+\title[Module Project B Solutions]{Week 7 Module Project B: Q-Learning with Bayesian Belief Tracking}
+\subtitle{Acting under partial observability with normalized posterior state}
+\author{CMPSC 480 - Instructor Solution Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\vspace{-0.35cm}
+\begin{center}
+\color{coursered}\bfseries Instructor material - do not distribute with the question deck
+\end{center}
+\end{frame}
+
+\begin{frame}{Solution overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large This instructor deck provides a complete matched solution and grading guidance.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Weeks 4-7: MDPs, Q-learning, approximation, Bayes nets, and inference
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}20 total\end{block}
+\begin{block}{Expected time}10-14 hours\end{block}
+\begin{block}{Submission}Repository, evaluation report, and belief traces\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Instructor verification checklist}
+\small
+\begin{itemize}
+  \item Use Python 3.11 and NumPy; do not use a library that implements the assessed algorithm.
+  \item Keep data, model, optimization, and evaluation responsibilities behind explicit interfaces.
+  \item Validate shapes, ranges, finite values, empty inputs, and terminal or degenerate cases.
+  \item Use deterministic seeds and record every configuration used for reported evidence.
+  \item Include focused tests and a README with exact reproduction commands.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Solution 1.a - Belief model (2 points)}
+\small
+\textbf{Question focus.} Write the vectorized posterior update.
+
+\vspace{0.25cm}
+\answerlabel For each hypothesis h, compute unnormalized[h]=likelihood(observation|h,agent\_state)*prior[h], then divide by the sum. Validate a nonnegative finite prior that sums to one.
+\end{frame}
+
+\begin{frame}{Solution 1.b - Belief model (2 points)}
+\small
+\textbf{Question focus.} Hand compute prior [0.5,0.5] with likelihoods [0.8,0.2] for one observation.
+
+\vspace{0.25cm}
+\answerlabel Unnormalized masses are [0.4,0.1], normalization is 0.5, and posterior is [0.8,0.2].
+\end{frame}
+
+\begin{frame}{Solution 1.c - Belief model (1 points)}
+\small
+\textbf{Question focus.} Define behavior when the normalization constant is zero or nonfinite.
+
+\vspace{0.25cm}
+\answerlabel Raise a domain-specific impossible-evidence error or apply a documented fallback such as restoring the prior; never silently divide by zero or invent a posterior.
+\end{frame}
+
+\begin{frame}{Solution 2.a - RL agent (2 points)}
+\small
+\textbf{Question focus.} Define the observable agent state and prove it excludes the true hidden hazard.
+
+\vspace{0.25cm}
+\answerlabel The state may include position, local observation, and belief vector or its summary. A test inspects inputs and confirms the true hazard identifier is never passed to policy or update code.
+\end{frame}
+
+\begin{frame}{Solution 2.b - RL agent (2 points)}
+\small
+\textbf{Question focus.} Specify epsilon-greedy selection and the terminal Q update.
+
+\vspace{0.25cm}
+\answerlabel Choose uniformly among legal actions with probability epsilon, otherwise stable argmax. For terminal steps target equals immediate reward; for others add gamma times max next Q.
+\end{frame}
+
+\begin{frame}{Solution 3.a - Integration contract (2 points)}
+\small
+\textbf{Question focus.} State the within-step order from observation to action to learning.
+
+\vspace{0.25cm}
+\answerlabel Condition the prior on the new observation, build the policy state from the updated belief, choose a legal action, execute it, then apply the reward transition update under the documented convention.
+\end{frame}
+
+\begin{frame}{Solution 3.b - Integration contract (1 points)}
+\small
+\textbf{Question focus.} Test that reset restores the declared prior and clears episode-local state.
+
+\vspace{0.25cm}
+\answerlabel Two episodes after reset begin with identical beliefs and agent state under the same seed, with no posterior or history leaked from the previous episode.
+\end{frame}
+
+\begin{frame}{Solution 3.c - Integration contract (1 points)}
+\small
+\textbf{Question focus.} List every component needed to resume training exactly.
+
+\vspace{0.25cm}
+\answerlabel Save Q parameters or table, belief configuration, online belief if mid-episode, epsilon, counters, environment state if supported, and all random-generator states.
+\end{frame}
+
+\begin{frame}{Solution 4.a - Noise study and ablation (2 points)}
+\small
+\textbf{Question focus.} Define safety and performance metrics and run multiple seeds.
+
+\vspace{0.25cm}
+\answerlabel Report mean return, success, hazard rate, and belief accuracy or entropy with variability for identical evaluation episodes and epsilon zero.
+\end{frame}
+
+\begin{frame}{Solution 4.b - Noise study and ablation (2 points)}
+\small
+\textbf{Question focus.} Ablate the posterior input and interpret the difference.
+
+\vspace{0.25cm}
+\answerlabel Replace the belief with a fixed prior or observation-only state while holding all else fixed. Attribute only the controlled performance change to belief integration.
+\end{frame}
+
+\begin{frame}{Solution 5.a - Defensive evidence (2 points)}
+\small
+\textbf{Question focus.} Provide four tests and name the defect each exposes.
+
+\vspace{0.25cm}
+\answerlabel Use repeated identical evidence, impossible evidence, uninformative sensor likelihoods, and a terminal transition; each test states expected belief or target and its associated bug.
+\end{frame}
+
+\begin{frame}{Solution 5.b - Defensive evidence (1 points)}
+\small
+\textbf{Question focus.} Explain why a high-noise posterior should remain closer to the prior.
+
+\vspace{0.25cm}
+\answerlabel When likelihoods are similar across hypotheses, multiplying by them changes relative prior masses little; normalized posterior information gain is therefore small.
+\end{frame}
+
+\begin{frame}{Edge-case reasoning and expected behavior}
+\small
+\begin{itemize}
+  \item Reject the prior.
+  \item Raise or use the documented impossible-evidence fallback.
+  \item Posterior equals prior.
+  \item Return without bootstrapping.
+  \item Fail the leakage test and remove the hidden value.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 1}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Belief model & 5 & Bayes numerator, normalization, repeated evidence, and validation are correct. \\
+RL agent & 4 & No hidden-state leakage; exploration, targets, and termination are correct. \\
+Integration contract & 4 & Update order, state encoding, reset, and episode isolation are correct. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 2}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Noise study and ablation & 4 & Noise, seeds, budgets, baselines, metrics, and uncertainty are reported. \\
+Defensive evidence & 3 & Tests cover impossible evidence, high noise, ties, and normalization drift. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection exemplar}
+\small
+\answerlabel A strong response verifies the posterior against an oracle, then uses visitation, reward design, policy state, or Q-learning evidence to locate the remaining control defect.
+
+\vspace{0.25cm}
+\gradinglabel Award credit for a specific claim supported by technical evidence from the submitted work.
+\end{frame}
+
+\end{document}

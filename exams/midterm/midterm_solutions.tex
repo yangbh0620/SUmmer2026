@@ -1,0 +1,265 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 100
+% CMPSC480_ITEM_IDS: 1,2,3,4,5,6,7
+\title[Midterm Solutions]{CMPSC 480 Midterm Examination}
+\subtitle{Cumulative assessment of Weeks 1-7}
+\author{CMPSC 480 - Instructor Solution Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\vspace{-0.35cm}
+\begin{center}
+\color{coursered}\bfseries Instructor material - do not distribute with the question deck
+\end{center}
+\end{frame}
+
+\begin{frame}{Solution overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large This instructor deck provides a complete matched solution and grading guidance.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Modules A and B: agents, search, adversarial reasoning, MDPs, RL, approximation, and Bayesian inference
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}100 total\end{block}
+\begin{block}{Expected time}110 minutes\end{block}
+\begin{block}{Submission}Individual examination PDF\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Instructor verification checklist}
+\small
+\begin{itemize}
+  \item Work independently and show intermediate algebra, frontier state, or factor state.
+  \item One double-sided handwritten letter-size reference sheet is permitted.
+  \item A nonprogrammable calculator is permitted; networked devices and communication are prohibited.
+  \item State every tie-breaking, terminal, reward, and zero-division convention you use.
+  \item Answers receive credit for justified reasoning; an unsupported final number may receive little credit.
+  \item Academic integrity rules of the course and institution apply throughout the examination.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Solution 1.a - Agent and search formulation (3 points)}
+\small
+\textbf{Question focus.} Give one concrete element for each PEAS component.
+
+\vspace{0.25cm}
+\answerlabel Performance includes timely collision-free delivery and battery use; environment includes corridors, doors, people, and stations; actuators include motion and lift commands; sensors include localization, range sensing, battery, and task messages.
+\end{frame}
+
+\begin{frame}{Solution 1.b - Agent and search formulation (3 points)}
+\small
+\textbf{Question focus.} Define states, actions, transition model, goal test, and path cost for deterministic route planning.
+
+\vspace{0.25cm}
+\answerlabel A state contains position and other path-relevant discrete facts such as carried item or battery bucket; actions are legal moves or task operations; transition applies one action; goal checks delivery completion; cost can combine time and energy with nonnegative units.
+\end{frame}
+
+\begin{frame}{Solution 1.c - Agent and search formulation (4 points)}
+\small
+\textbf{Question focus.} Explain why rational behavior does not imply omniscience and name two defensive interface checks.
+
+\vspace{0.25cm}
+\answerlabel Rationality maximizes expected performance using the available percept history and knowledge, so uncertainty can still produce failure. Checks include immutable state keys, legal successor validation, positive costs for UCS/A-star, deterministic ties, and explicit failure.
+\end{frame}
+
+\begin{frame}{Solution 2.a - UCS and A-star (5 points)}
+\small
+\textbf{Question focus.} Trace UCS until a goal is removed, including cheaper rediscovery.
+
+\vspace{0.25cm}
+\answerlabel Remove S(0), insert A(4),B(1); remove B(1), improve A to 2 and insert G(9); remove A(2), improve G to 5; remove G(5). Return S-B-A-G with cost 5.
+\end{frame}
+
+\begin{frame}{Solution 2.b - UCS and A-star (5 points)}
+\small
+\textbf{Question focus.} Trace A-star priorities and return the selected path.
+
+\vspace{0.25cm}
+\answerlabel After S, A has f=7 and B f=5; remove B, improved A has g=2,f=5 and G has f=9; remove A, improve G to g=f=5; remove G and return cost 5.
+\end{frame}
+
+\begin{frame}{Solution 2.c - UCS and A-star (5 points)}
+\small
+\textbf{Question focus.} Is the heuristic admissible and consistent? Justify from the graph.
+
+\vspace{0.25cm}
+\answerlabel True remaining costs are h-star(G)=0, h-star(A)=3, h-star(B)=4 via A, and h-star(S)=5 via B-A. The listed h equals these values, so it is admissible. Each edge satisfies h(n)<=c+h(n-prime), including S-B:5<=1+4 and B-A:4<=1+3, so it is consistent.
+\end{frame}
+
+\begin{frame}{Solution 3.a - Minimax and alpha-beta (5 points)}
+\small
+\textbf{Question focus.} Compute every minimax value and the selected action.
+
+\vspace{0.25cm}
+\answerlabel MIN(A)=4, MIN(B)=3, and MIN(C)=2. MAX chooses A with root value 4.
+\end{frame}
+
+\begin{frame}{Solution 3.b - Minimax and alpha-beta (5 points)}
+\small
+\textbf{Question focus.} Trace alpha-beta left to right and identify pruned leaves.
+
+\vspace{0.25cm}
+\answerlabel After A, root alpha=4. At B, first leaf gives beta=3, so alpha>=beta and leaf 8 is pruned. At C, first leaf 5 does not prune because beta=5; second leaf gives 2. The root still chooses A.
+\end{frame}
+
+\begin{frame}{Solution 3.c - Minimax and alpha-beta (5 points)}
+\small
+\textbf{Question focus.} Design a depth-cutoff evaluation with three features and state two tests.
+
+\vspace{0.25cm}
+\answerlabel A valid MAX-perspective weighted sum might use score difference, mobility difference, and threat or distance advantage with normalized scales. Test terminal states bypass the heuristic and alpha-beta returns the same value as plain minimax on generated small trees.
+\end{frame}
+
+\begin{frame}{Solution 4.a - MDP planning (5 points)}
+\small
+\textbf{Question focus.} Compute Q(s,a) under reward-on-transition semantics.
+
+\vspace{0.25cm}
+\answerlabel Q(s,a)=0.8[5+0]+0.2[0+0.9(2)]=4+0.36=4.36.
+\end{frame}
+
+\begin{frame}{Solution 4.b - MDP planning (5 points)}
+\small
+\textbf{Question focus.} Compute Q(s,b) and the greedy action.
+
+\vspace{0.25cm}
+\answerlabel Q(s,b)=3 because the transition terminates and has no bootstrap. Since 4.36>3, choose a.
+\end{frame}
+
+\begin{frame}{Solution 4.c - MDP planning (5 points)}
+\small
+\textbf{Question focus.} Explain why value iteration converges for a finite discounted MDP.
+
+\vspace{0.25cm}
+\answerlabel The Bellman optimality operator changes values by at most gamma times the previous max-norm difference: expectation and maximum do not enlarge the bound beyond gamma. Since gamma<1, it is a contraction with a unique fixed point.
+\end{frame}
+
+\begin{frame}{Solution 5.a - Q-learning and approximation (5 points)}
+\small
+\textbf{Question focus.} Compute current Q, target, TD error, and new weights.
+
+\vspace{0.25cm}
+\answerlabel Current Q=0.5-1=-0.5. Target=2+0.5(3)=3.5; delta=4. Increment=0.2(4)[1,2]=[0.8,1.6], so new w=[1.3,1.1].
+\end{frame}
+
+\begin{frame}{Solution 5.b - Q-learning and approximation (5 points)}
+\small
+\textbf{Question focus.} Recompute the update if the transition is terminal.
+
+\vspace{0.25cm}
+\answerlabel Target=2, delta=2-(-0.5)=2.5, increment=0.2(2.5)[1,2]=[0.5,1], and new w=[1,0.5].
+\end{frame}
+
+\begin{frame}{Solution 5.c - Q-learning and approximation (5 points)}
+\small
+\textbf{Question focus.} Name the deadly triad and two observable instability signals.
+
+\vspace{0.25cm}
+\answerlabel The triad is function approximation, bootstrapping, and off-policy learning. Signals include exploding weight or Q norms, increasing absolute TD-error quantiles, nonfinite values, oscillatory loss or return, and large cross-seed variance.
+\end{frame}
+
+\begin{frame}{Solution 6.a - Bayesian networks and inference (5 points)}
+\small
+\textbf{Question focus.} Compute P(R,S,W) for all three true.
+
+\vspace{0.25cm}
+\answerlabel Use the factorization P(R)P(S|R)P(W|R,S)=0.2(0.1)(0.99)=0.0198.
+\end{frame}
+
+\begin{frame}{Solution 6.b - Bayesian networks and inference (5 points)}
+\small
+\textbf{Question focus.} Write an exact expression for P(R|W) without evaluating missing CPT rows.
+
+\vspace{0.25cm}
+\answerlabel P(R|W) is proportional to P(R) sum\_s P(s|R)P(W|R,s); compute that mass for R=true and false using their CPT rows, then normalize the two masses.
+\end{frame}
+
+\begin{frame}{Solution 6.c - Bayesian networks and inference (5 points)}
+\small
+\textbf{Question focus.} If factors f(R,S) and g(S,W) are multiplied and S is summed out, what is the result scope and why can order matter?
+
+\vspace{0.25cm}
+\answerlabel The product scope is \{R,S,W\}; summing S yields a factor over \{R,W\}. Different elimination orders can create intermediate factors over more variables and therefore require exponentially more space and arithmetic.
+\end{frame}
+
+\begin{frame}{Solution 7.a - Integrated engineering scenario (5 points)}
+\small
+\textbf{Question focus.} Specify the belief-to-policy interface and three invariants.
+
+\vspace{0.25cm}
+\answerlabel Pass a fixed-order normalized finite belief vector, optionally with observable state features, never the hidden truth. Invariants include correct dimension, nonnegative entries summing to one, and legal-action-only output.
+\end{frame}
+
+\begin{frame}{Solution 7.b - Integrated engineering scenario (5 points)}
+\small
+\textbf{Question focus.} Design a controlled ablation showing whether belief tracking helps.
+
+\vspace{0.25cm}
+\answerlabel Compare the full agent with a fixed-prior or observation-only agent using identical training steps, seeds, environment cases, and epsilon-zero evaluation; report return, success, hazard rate, and variability.
+\end{frame}
+
+\begin{frame}{Solution 7.c - Integrated engineering scenario (5 points)}
+\small
+\textbf{Question focus.} State a response to impossible evidence and a posttraining safety gate.
+
+\vspace{0.25cm}
+\answerlabel Raise or apply a declared fallback posterior when normalization is zero. Before acceptance, require belief oracle tests, terminal-update tests, finite Q/weight limits, and hazard-rate performance across noise levels.
+\end{frame}
+
+\begin{frame}{Edge-case reasoning and expected behavior}
+\small
+\begin{itemize}
+  \item Return an empty path.
+  \item Use stable action order.
+  \item Ignore the bootstrap.
+  \item Raise or use the declared fallback.
+  \item Choose a lower-growth elimination order and report maximum factor scope.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 1}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Agent and search formulation & 10 & Components are precise and connected to observable behavior. \\
+UCS and A-star & 15 & Costs, updates, and guarantee conditions are correct. \\
+Minimax and alpha-beta & 15 & Values, bounds, pruning, and perspective are correct. \\
+MDP planning & 15 & Expectations, terminal convention, and contraction logic are sound. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 2}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Q-learning and approximation & 15 & Arithmetic and deadly-triad reasoning are precise. \\
+Bayesian networks and inference & 15 & CPT selection, normalization plan, and factor scope are correct. \\
+Integrated engineering scenario & 15 & The answer connects inference, learning, evaluation, and defensive controls. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection exemplar}
+\small
+\answerlabel A full-credit response names the problem, states the assumption, and explains the exact trace, equation, or guarantee affected.
+
+\vspace{0.25cm}
+\gradinglabel Award credit for a specific claim supported by technical evidence from the submitted work.
+\end{frame}
+
+\end{document}

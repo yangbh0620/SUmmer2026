@@ -1,0 +1,145 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 10
+% CMPSC480_ITEM_IDS: 1,2,3,4
+\title[Week 5 Assignment Questions]{Week 5 Assignment: Tabular Q-Learning}
+\subtitle{A tested model-free agent with controlled exploration and oracle comparison}
+\author{CMPSC 480 - Student Question Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Assessment overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large Train a tabular Q-learning agent and evaluate learning behavior against a planning oracle.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Week 5: TD learning, exploration, terminal targets, and empirical evaluation
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}10 total\end{block}
+\begin{block}{Expected time}6-8 hours\end{block}
+\begin{block}{Submission}Repository, learning curves, and report\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Learning objectives}
+\begin{itemize}
+  \item Separate environment dynamics from agent state.
+  \item Implement epsilon-greedy action selection with deterministic evaluation.
+  \item Apply the terminal-aware Q-learning update.
+  \item Run reproducible training and evaluation phases.
+  \item Compare a learned policy with value-iteration ground truth.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Requirements checklist}
+\small
+\begin{itemize}
+  \item Use Python 3.11 and NumPy only unless the prompt explicitly permits another package.
+  \item Preserve the published interfaces and make all tie-breaking deterministic.
+  \item State assumptions, validate inputs, and handle empty, terminal, and unreachable cases.
+  \item Include focused tests whose names explain the defect each test would expose.
+  \item Report measured evidence; do not replace experimental results with unsupported claims.
+  \item Seed every source of randomness used in reported experiments.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Task 1 - Agent and exploration contract (2 points)}
+\small
+Implement a Q-table agent without embedding environment transition logic.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Define observe, select\_action, update, and evaluate-mode behavior. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Specify epsilon-greedy selection and a bounded decay schedule. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 2 - Q-learning update (3 points)}
+\small
+Implement and validate the off-policy temporal-difference update.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] State the update and define the TD error. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Compute one update for Q=2, r=1, gamma=0.9, max next Q=4, and alpha=0.5. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{c.}] Explain and test terminal handling. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 3 - Training protocol (2 points)}
+\small
+Build a reproducible episodic training loop with safety limits.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Describe reset, interaction, update, and episode termination order. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Log return, episode length, epsilon, and moving-average return. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 4 - Evaluation and tests (3 points)}
+\small
+Measure policy quality and diagnose sensitivity to exploration and rewards.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Evaluate the greedy policy without learning or exploration. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Compare greedy actions or returns with a value-iteration oracle. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{c.}] Run one controlled hyperparameter ablation and cover sparse-reward and unseen-state cases. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Edge cases and defensive programming}
+\small
+\begin{itemize}
+  \item No legal actions are returned.
+  \item The transition is terminal.
+  \item All action values tie.
+  \item A state has never been visited.
+  \item An episode reaches the safety step limit.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Submission instructions}
+\small
+\begin{itemize}
+  \item Submit source, tests, seeds, and hyperparameters.
+  \item Include learning curves plus a compact oracle-comparison table.
+  \item Document the exact command that reproduces the reported run.
+\end{itemize}
+\vspace{0.2cm}
+\alert{Do not submit credentials, generated caches, or unapproved libraries.}
+\end{frame}
+
+\begin{frame}{Grading rubric}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+Agent and exploration contract & 2 & Agent API, epsilon schedule, and action-selection tests. \\
+Q-learning update & 3 & Update function and hand-computed unit tests. \\
+Training protocol & 2 & Training loop, seeds, and logged metrics. \\
+Evaluation and tests & 3 & Oracle comparison, ablation, and edge-case tests. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection prompt}
+In 150-200 words:
+
+Explain one gap between a learned policy and the planning oracle. Distinguish modeling mismatch from sampling or optimization error.
+\end{frame}
+
+\end{document}

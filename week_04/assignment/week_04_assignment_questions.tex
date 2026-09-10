@@ -1,0 +1,144 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 10
+% CMPSC480_ITEM_IDS: 1,2,3,4
+\title[Week 4 Assignment Questions]{Week 4 Assignment: Planning in a Stochastic Gridworld}
+\subtitle{MDP modeling, value iteration, policy iteration, and verification}
+\author{CMPSC 480 - Student Question Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Assessment overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large Model stochastic transitions precisely and solve the same MDP with two dynamic-programming methods.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Week 4: MDPs, Bellman backups, value iteration, and policy iteration
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}10 total\end{block}
+\begin{block}{Expected time}6-8 hours\end{block}
+\begin{block}{Submission}Repository plus experiment memo\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Learning objectives}
+\begin{itemize}
+  \item Encode a finite MDP with normalized transition distributions.
+  \item Implement terminal-aware Bellman backups.
+  \item Run value iteration to a documented tolerance.
+  \item Alternate policy evaluation and improvement correctly.
+  \item Cross-check two solvers and reason about edge cases.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Requirements checklist}
+\small
+\begin{itemize}
+  \item Use Python 3.11 and NumPy only unless the prompt explicitly permits another package.
+  \item Preserve the published interfaces and make all tie-breaking deterministic.
+  \item State assumptions, validate inputs, and handle empty, terminal, and unreachable cases.
+  \item Include focused tests whose names explain the defect each test would expose.
+  \item Report measured evidence; do not replace experimental results with unsupported claims.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Task 1 - MDP model (2 points)}
+\small
+Represent grid states, walls, terminal rewards, legal actions, and 80/10/10 stochastic motion.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Define S, A, P, R, gamma, initial state, walls, and terminal states. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Write validation tests for every state-action transition distribution. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 2 - Value iteration (3 points)}
+\small
+Implement synchronous Bellman optimality backups and a convergence test.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Write the Bellman optimality backup used for each nonterminal state. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Use a copy of the previous value vector and stop when the maximum residual is below tolerance. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{c.}] Extract a deterministic greedy policy and report values for designated cells. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 3 - Policy iteration (3 points)}
+\small
+Alternate policy evaluation with greedy policy improvement.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Describe iterative policy evaluation for a fixed policy. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Implement greedy improvement and state the stability condition. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{c.}] Compare the final policy and values with value iteration. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 4 - Validation and analysis (2 points)}
+\small
+Use analytic and metamorphic checks rather than trusting one implementation.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Test gamma=0, a one-state terminal MDP, blocked slips, and a reward perturbation. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{b.}] Explain how gamma and slip probability change the policy in two experiments. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Edge cases and defensive programming}
+\small
+\begin{itemize}
+  \item Initial state is terminal.
+  \item A slip hits a wall or boundary.
+  \item Two actions have equal value.
+  \item Gamma equals zero.
+  \item Tolerance is nonpositive.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Submission instructions}
+\small
+\begin{itemize}
+  \item Submit source, tests, and exact run commands.
+  \item Include residual and policy-comparison tables.
+  \item State reward and terminal conventions in the README.
+\end{itemize}
+\vspace{0.2cm}
+\alert{Do not submit credentials, generated caches, or unapproved libraries.}
+\end{frame}
+
+\begin{frame}{Grading rubric}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+MDP model & 2 & Validated transition and reward functions. \\
+Value iteration & 3 & Value iteration, policy extraction, and residual trace. \\
+Policy iteration & 3 & Policy iteration and comparison with value iteration. \\
+Validation and analysis & 2 & Tests and a concise result table. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection prompt}
+In 150-200 words:
+
+Describe one modeling choice whose effect was larger than an algorithmic optimization. Support the claim with a controlled comparison.
+\end{frame}
+
+\end{document}

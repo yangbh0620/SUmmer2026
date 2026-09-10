@@ -1,0 +1,164 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 10
+% CMPSC480_ITEM_IDS: 1,2,3,4
+\title[Week 5 Assignment Solutions]{Week 5 Assignment: Tabular Q-Learning}
+\subtitle{A tested model-free agent with controlled exploration and oracle comparison}
+\author{CMPSC 480 - Instructor Solution Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\vspace{-0.35cm}
+\begin{center}
+\color{coursered}\bfseries Instructor material - do not distribute with the question deck
+\end{center}
+\end{frame}
+
+\begin{frame}{Solution overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large This instructor deck provides a complete matched solution and grading guidance.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Week 5: TD learning, exploration, terminal targets, and empirical evaluation
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}10 total\end{block}
+\begin{block}{Expected time}6-8 hours\end{block}
+\begin{block}{Submission}Repository, learning curves, and report\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Instructor verification checklist}
+\small
+\begin{itemize}
+  \item Use Python 3.11 and NumPy only unless the prompt explicitly permits another package.
+  \item Preserve the published interfaces and make all tie-breaking deterministic.
+  \item State assumptions, validate inputs, and handle empty, terminal, and unreachable cases.
+  \item Include focused tests whose names explain the defect each test would expose.
+  \item Report measured evidence; do not replace experimental results with unsupported claims.
+  \item Seed every source of randomness used in reported experiments.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Solution 1.a - Agent and exploration contract (1 points)}
+\small
+\textbf{Question focus.} Define observe, select\_action, update, and evaluate-mode behavior.
+
+\vspace{0.25cm}
+\answerlabel The agent receives transitions from the environment, stores Q values keyed by state-action, selects only legal actions, updates from observations, and uses epsilon zero during evaluation.
+\end{frame}
+
+\begin{frame}{Solution 1.b - Agent and exploration contract (1 points)}
+\small
+\textbf{Question focus.} Specify epsilon-greedy selection and a bounded decay schedule.
+
+\vspace{0.25cm}
+\answerlabel With probability epsilon choose uniformly among legal actions; otherwise choose a stable argmax. Decay is applied at a documented cadence and clipped to epsilon\_min.
+\end{frame}
+
+\begin{frame}{Solution 2.a - Q-learning update (1 points)}
+\small
+\textbf{Question focus.} State the update and define the TD error.
+
+\vspace{0.25cm}
+\answerlabel The target is r plus gamma times max over next legal actions Q(s-prime,a-prime) for nonterminal transitions. Delta is target minus Q(s,a), and Q(s,a) increases by alpha times delta.
+\end{frame}
+
+\begin{frame}{Solution 2.b - Q-learning update (1 points)}
+\small
+\textbf{Question focus.} Compute one update for Q=2, r=1, gamma=0.9, max next Q=4, and alpha=0.5.
+
+\vspace{0.25cm}
+\answerlabel The target is 1+0.9*4=4.6; delta is 2.6; the updated value is 2+0.5*2.6=3.3.
+\end{frame}
+
+\begin{frame}{Solution 2.c - Q-learning update (1 points)}
+\small
+\textbf{Question focus.} Explain and test terminal handling.
+
+\vspace{0.25cm}
+\answerlabel For done=True the target is r only; no next-state maximum is used. A test gives a very large next Q value and confirms it does not change the terminal update.
+\end{frame}
+
+\begin{frame}{Solution 3.a - Training protocol (1 points)}
+\small
+\textbf{Question focus.} Describe reset, interaction, update, and episode termination order.
+
+\vspace{0.25cm}
+\answerlabel Reset returns the initial state; each step selects, executes, records reward and done, updates once, and advances state. The loop ends on done or a maximum-step truncation.
+\end{frame}
+
+\begin{frame}{Solution 3.b - Training protocol (1 points)}
+\small
+\textbf{Question focus.} Log return, episode length, epsilon, and moving-average return.
+
+\vspace{0.25cm}
+\answerlabel Metrics use consistent windows and distinguish truncation from environment termination. Seeds and hyperparameters are recorded with the run.
+\end{frame}
+
+\begin{frame}{Solution 4.a - Evaluation and tests (1 points)}
+\small
+\textbf{Question focus.} Evaluate the greedy policy without learning or exploration.
+
+\vspace{0.25cm}
+\answerlabel Set epsilon to zero, freeze Q values, run independent seeded episodes, and report mean return, success rate, and confidence or variability.
+\end{frame}
+
+\begin{frame}{Solution 4.b - Evaluation and tests (1 points)}
+\small
+\textbf{Question focus.} Compare greedy actions or returns with a value-iteration oracle.
+
+\vspace{0.25cm}
+\answerlabel Map both policies to the same MDP semantics. Count exact or tie-equivalent action agreement and explain differences caused by incomplete visitation or stochastic estimates.
+\end{frame}
+
+\begin{frame}{Solution 4.c - Evaluation and tests (1 points)}
+\small
+\textbf{Question focus.} Run one controlled hyperparameter ablation and cover sparse-reward and unseen-state cases.
+
+\vspace{0.25cm}
+\answerlabel Vary only alpha, epsilon schedule, or gamma. Report curves and explain bias/noise effects. Unseen states start from a documented default; sparse rewards do not cause crashes or false convergence claims.
+\end{frame}
+
+\begin{frame}{Edge-case reasoning and expected behavior}
+\small
+\begin{itemize}
+  \item Treat it as terminal or raise a domain-contract error.
+  \item Use target equal to the immediate reward.
+  \item Choose deterministically in evaluation and uniformly only in exploration.
+  \item Use the declared initialization value for every legal action.
+  \item Record truncation separately and stop without a synthetic terminal bootstrap.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Grading rubric}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Agent and exploration contract & 2 & Separation, legal actions, exploration probabilities, and ties are correct. \\
+Q-learning update & 3 & TD target, terminal mask, and in-place assignment are correct. \\
+Training protocol & 2 & Episodes terminate safely and training/evaluation are distinct. \\
+Evaluation and tests & 3 & Metrics are unbiased, controlled, and interpreted correctly. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection exemplar}
+\small
+\answerlabel A strong response verifies shared MDP semantics first, then uses visitation counts, TD error, or repeated-run evidence to attribute the remaining gap to exploration, finite data, or hyperparameters.
+
+\vspace{0.25cm}
+\gradinglabel Award credit for a specific claim supported by technical evidence from the submitted work.
+\end{frame}
+
+\end{document}

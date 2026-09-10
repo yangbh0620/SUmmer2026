@@ -1,0 +1,483 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 10
+% CMPSC480_ITEM_IDS: 1,2,3,4
+% CMPSC480_SUBITEM_POINTS: 1=2,2=5,3=1,4=2
+\title[CMPSC 480 - Week 1 Solutions]{Week 1 Code Lab - Complete Solutions}
+\subtitle{Environment Setup and Your First Agent/Problem Skeleton}
+\author{CMPSC 480 - Instructor Solution Deck}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+  \vspace{-0.35cm}
+  \begin{center}
+    \color{coursered}\bfseries Instructor material - do not distribute with the question deck
+  \end{center}
+\end{frame}
+
+\begin{frame}{Solution overview}
+  \answerlabel The reference implementation uses:
+  \begin{itemize}
+    \item a tuple \((row, column)\) as the immutable state;
+    \item an \texttt{Enum} for the four actions;
+    \item a validated \texttt{GridProblem} with deterministic action order;
+    \item an abstract generic \texttt{Agent} contract;
+    \item \texttt{unittest} for normal, boundary, illegal, and malformed cases; and
+    \item a verification script that fails with a nonzero process status.
+  \end{itemize}
+
+  \vspace{0.25cm}
+  Equivalent designs earn full credit when they satisfy the same observable
+  contract.
+\end{frame}
+
+\begin{frame}{Reference repository structure}
+  \begin{block}{Complete submission}
+    \ttfamily
+    week01-agent-skeleton/\par
+    \hspace{0.45cm}README.md\par
+    \hspace{0.45cm}verify\_environment.py\par
+    \hspace{0.45cm}src/\par
+    \hspace{0.9cm}\_\_init\_\_.py\par
+    \hspace{0.9cm}agent.py\par
+    \hspace{0.9cm}problem.py\par
+    \hspace{0.45cm}tests/\par
+    \hspace{0.9cm}test\_problem.py
+  \end{block}
+  \gradinglabel Accept a \texttt{pyproject.toml} or package-based structure if
+  imports and the documented test command work from a clean checkout.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 1 - environment verification imports}
+\begin{lstlisting}
+from __future__ import annotations
+
+import subprocess
+import sys
+from importlib.metadata import PackageNotFoundError, version
+
+
+def package_version(name: str) -> str:
+    try:
+        return version(name)
+    except PackageNotFoundError as exc:
+        raise RuntimeError(
+            f"required package is not installed: {name}"
+        ) from exc
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Solution 1 - Git command helper}
+\begin{lstlisting}
+def git_output(*args: str) -> str:
+    completed = subprocess.run(
+        ["git", *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return completed.stdout.strip()
+\end{lstlisting}
+\answerlabel \texttt{check=True} converts a failed Git command into a nonzero
+program outcome instead of silently accepting empty output.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 1 - version and package checks}
+\begin{lstlisting}
+def main() -> None:
+    if sys.version_info < (3, 10):
+        raise RuntimeError("Python 3.10 or newer is required")
+
+    print(f"PYTHON={sys.version.split()[0]}")
+    print(f"NUMPY={package_version('numpy')}")
+    print(f"JUPYTER={package_version('jupyterlab')}")
+\end{lstlisting}
+\answerlabel Stable labels make the output readable by both a person and a
+simple grading script.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 1 - Git checks and entry point}
+\begin{lstlisting}
+    # Continue inside main().
+    if git_output("rev-parse", "--is-inside-work-tree") != "true":
+        raise RuntimeError("current directory is not a Git work tree")
+
+    commits = int(git_output("rev-list", "--count", "HEAD"))
+    if commits < 1:
+        raise RuntimeError("the repository has no commits")
+    print(f"GIT_COMMITS={commits}")
+
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Solution 1 - Expected behavior (2 points)}
+  \begin{block}{Representative successful output}
+    \ttfamily
+    PYTHON=3.11.0\par
+    NUMPY=2.1.0\par
+    JUPYTER=4.2.0\par
+    GIT\_COMMITS=3
+  \end{block}
+  \begin{itemize}
+    \item Exact installed versions may differ.
+    \item Missing software, an old Python version, a nonrepository directory, or
+      zero commits must produce a nonzero exit status.
+  \end{itemize}
+  \gradinglabel Award full credit when the output is stable and every required
+  condition affects process success.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 2 - immutable state and action model}
+\begin{lstlisting}
+from __future__ import annotations
+
+from enum import Enum
+from typing import TypeAlias
+
+State: TypeAlias = tuple[int, int]
+
+
+class Action(Enum):
+    UP = (-1, 0)
+    DOWN = (1, 0)
+    LEFT = (0, -1)
+    RIGHT = (0, 1)
+\end{lstlisting}
+  \answerlabel A two-integer tuple has value equality, stable hashing, and no
+  mutating methods. It can therefore serve as a set member or dictionary key.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 2 - class and constructor signature}
+\begin{lstlisting}
+class GridProblem:
+    ACTION_ORDER = (
+        Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT
+    )
+
+    def __init__(
+        self,
+        rows: int,
+        columns: int,
+        start: State,
+        goal: State,
+        blocked: frozenset[State] = frozenset(),
+    ) -> None:
+\end{lstlisting}
+\answerlabel A fixed action order makes successor generation deterministic,
+which simplifies testing and debugging.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 2 - constructor state}
+\begin{lstlisting}
+        # Continue inside GridProblem.__init__.
+        if rows < 1 or columns < 1:
+            raise ValueError("grid dimensions must be positive")
+        self.rows = rows
+        self.columns = columns
+        self.start = start
+        self.goal = goal
+        self.blocked = frozenset(blocked)
+\end{lstlisting}
+\answerlabel Copying \texttt{blocked} into a \texttt{frozenset} prevents later
+caller mutation from changing the problem definition.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 2 - constructor domain validation}
+\begin{lstlisting}
+        # Continue inside GridProblem.__init__.
+        self._validate_state(start)
+        self._validate_state(goal)
+        for state in self.blocked:
+            self._validate_coordinate(state)
+        if start in self.blocked or goal in self.blocked:
+            raise ValueError("start and goal must be traversable")
+\end{lstlisting}
+\answerlabel Every configured coordinate is checked once at the public boundary.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 2 - state-validation helpers}
+\begin{lstlisting}
+    def _validate_coordinate(self, state: State) -> None:
+        if (
+            not isinstance(state, tuple)
+            or len(state) != 2
+            or any(type(value) is not int for value in state)
+        ):
+            raise TypeError("state must be a tuple of two integers")
+        row, column = state
+        if not (0 <= row < self.rows and 0 <= column < self.columns):
+            raise ValueError(f"state is outside the grid: {state}")
+
+    def _validate_state(self, state: State) -> None:
+        self._validate_coordinate(state)
+        if state in self.blocked:
+            raise ValueError(f"state is blocked: {state}")
+
+    def initial_state(self) -> State:
+        return self.start
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Solution 2 - legal actions}
+\begin{lstlisting}
+    def _destination(self, state: State, action: Action) -> State:
+        delta_row, delta_column = action.value
+        return state[0] + delta_row, state[1] + delta_column
+
+    def actions(self, state: State) -> list[Action]:
+        self._validate_state(state)
+        legal: list[Action] = []
+        for action in self.ACTION_ORDER:
+            candidate = self._destination(state, action)
+            try:
+                self._validate_state(candidate)
+            except ValueError:
+                continue
+            legal.append(action)
+        return legal
+\end{lstlisting}
+\answerlabel Iterating through \texttt{ACTION\_ORDER} makes tie behavior
+deterministic and testable.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 2 - validated transition}
+\begin{lstlisting}
+    def result(self, state: State, action: Action) -> State:
+        self._validate_state(state)
+        if not isinstance(action, Action):
+            raise TypeError("action must be an Action value")
+        if action not in self.actions(state):
+            raise ValueError(f"illegal action {action.name} at {state}")
+        return self._destination(state, action)
+\end{lstlisting}
+\answerlabel The returned tuple is a new value. The caller's state remains
+unchanged and safe as an explored-set key.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 2 - validated goal test}
+\begin{lstlisting}
+    def goal_test(self, state: State) -> bool:
+        self._validate_state(state)
+        return state == self.goal
+\end{lstlisting}
+\answerlabel Validation prevents a malformed coordinate from silently becoming a
+normal negative result.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 2 - verified step cost}
+\begin{lstlisting}
+    def step_cost(
+        self,
+        state: State,
+        action: Action,
+        next_state: State,
+    ) -> float:
+        expected = self.result(state, action)
+        self._validate_state(next_state)
+        if next_state != expected:
+            raise ValueError(
+                f"{next_state} is not the result of {action.name} at {state}"
+            )
+        return 1.0
+\end{lstlisting}
+  \answerlabel Reusing \texttt{result} centralizes the legal-transition contract
+  and prevents cost calculation for an impossible edge.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 3 - Agent contract (1 point)}
+\begin{lstlisting}
+from abc import ABC, abstractmethod
+from typing import Generic, TypeVar
+
+PerceptT = TypeVar("PerceptT")
+ActionT = TypeVar("ActionT")
+
+
+class Agent(ABC, Generic[PerceptT, ActionT]):
+    """Base interface for agents that map percepts to actions."""
+
+    @abstractmethod
+    def act(self, percept: PerceptT) -> ActionT:
+        """Return the next action for the supplied percept."""
+        raise NotImplementedError
+\end{lstlisting}
+  \answerlabel The abstract method makes incomplete use fail immediately while
+  preserving a stable Week 2 extension point.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 4 - Contract tests and repository quality (2 points)}
+\begin{lstlisting}
+import unittest
+
+from src.problem import Action, GridProblem
+
+
+class GridProblemTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.problem = GridProblem(
+            rows=3,
+            columns=3,
+            start=(0, 0),
+            goal=(2, 2),
+            blocked=frozenset({(1, 1)}),
+        )
+\end{lstlisting}
+\answerlabel A shared fixture keeps every test focused on one behavior.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 4 - normal and boundary tests}
+\begin{lstlisting}
+    def test_corner_actions_are_deterministic(self) -> None:
+        self.assertEqual(
+            self.problem.actions((0, 0)),
+            [Action.DOWN, Action.RIGHT],
+        )
+
+    def test_known_transition(self) -> None:
+        self.assertEqual(
+            self.problem.result((0, 0), Action.RIGHT),
+            (0, 1),
+        )
+\end{lstlisting}
+\gradinglabel Award one point for focused behavioral tests and one point for
+reproducible documentation and repository quality.
+\end{frame}
+
+\begin{frame}[fragile]{Solution 4 - illegal, goal, and hashing tests}
+\begin{lstlisting}
+    def test_illegal_action_is_rejected(self) -> None:
+        with self.assertRaises(ValueError):
+            self.problem.result((0, 0), Action.UP)
+
+    def test_goal_test_and_hashability(self) -> None:
+        self.assertFalse(self.problem.goal_test((0, 0)))
+        self.assertTrue(self.problem.goal_test((2, 2)))
+        explored = {(0, 0), (0, 1)}
+        self.assertIn((0, 1), explored)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Solution 4 - degenerate and malformed cases}
+\begin{lstlisting}
+    def test_one_cell_grid_has_no_actions(self) -> None:
+        problem = GridProblem(1, 1, (0, 0), (0, 0))
+        self.assertEqual(problem.actions((0, 0)), [])
+
+    def test_malformed_state_is_rejected(self) -> None:
+        with self.assertRaises(ValueError):
+            self.problem.goal_test((3, 0))
+
+
+if __name__ == "__main__":
+    unittest.main()
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Edge-case reasoning}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.47\textwidth}
+      \begin{block}{One-cell grid}
+        The state may be both initial and goal. The legal-action list is empty,
+        which is distinct from a failure value.
+      \end{block}
+      \begin{block}{Blocked cells}
+        Configuration may name blocked coordinates, but no public operation may
+        accept one as a traversable state.
+      \end{block}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{block}{Illegal action}
+        Returning the unchanged state would hide a caller defect. The reference
+        contract raises \texttt{ValueError}.
+      \end{block}
+      \begin{block}{Stable hashing}
+        Every transition creates a new tuple. Existing state keys remain valid
+        in sets and dictionaries.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Rubric solution - Correctness (8 points)}
+  \scriptsize
+  \begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth} c X}
+    \toprule
+    Category & Points & Full-credit evidence \\
+    \midrule
+    Environment verification & 2 & All versions, Git work-tree status, positive
+      commit count, and nonzero failure status \\
+    Immutable state model & 1 & Stable equality and hashing; no mutation \\
+    Legal actions and transitions & 2 & Correct deterministic behavior at
+      boundaries and blocked cells \\
+    Goal test and step cost & 1 & Boolean goal result; positive cost only for the
+      matching legal transition \\
+    Defensive validation & 1 & Precise type/domain/action rejection \\
+    Agent abstraction & 1 & Abstract, documented, type-parameterized contract \\
+    \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\begin{frame}{Rubric solution - Tests and quality (2 points)}
+  \scriptsize
+  \begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth} c X}
+    \toprule
+    Category & Points & Full-credit evidence \\
+    \midrule
+    Focused tests & 1 & Normal transition, boundary actions, illegal action,
+      goal cases, hashability, no-action state, and malformed state \\
+    Documentation and repository & 1 & Public docstrings, complete type hints,
+      reproducible README, clean tree, and meaningful commit \\
+    \midrule
+    \textbf{Total} & \textbf{10} & \\
+    \bottomrule
+  \end{tabularx}
+
+  \vspace{0.35cm}
+  \gradinglabel Deduct only once for one underlying defect that causes several
+  downstream test failures.
+\end{frame}
+
+\begin{frame}{Reflection exemplar}
+  \small
+  \answerlabel The initial-state component maps to the immutable tuple returned
+  by \texttt{initial\_state}. The action function maps to
+  \texttt{actions(state)}, whose deterministic list contains exactly the moves
+  that stay in bounds and avoid blocked cells. The transition model maps to
+  \texttt{result}, which validates the current state and action before creating
+  a new tuple. The goal test compares a validated state with the configured
+  goal, and the path-cost model assigns 1.0 to each verified legal transition.
+
+  \vspace{0.3cm}
+  One ambiguity was whether an illegal move should leave the state unchanged.
+  I chose an exception because the method contract accepts only legal actions;
+  silently staying in place would hide a caller defect. A tuple state has value
+  equality and stable hashing, so Week 2 can store it safely in an explored set.
+\end{frame}
+
+\begin{frame}{Instructor verification commands}
+  Run from a clean checkout:
+
+  \vspace{0.35cm}
+  \begin{block}{Environment}
+    \ttfamily python verify\_environment.py
+  \end{block}
+  \begin{block}{Tests}
+    \ttfamily python -m unittest discover -s tests -v
+  \end{block}
+  \begin{block}{Repository evidence}
+    \ttfamily git status --short\par
+    git log -1 --oneline
+  \end{block}
+
+  \keyidea{The reference implementation contains no search algorithm; Week 1
+  establishes the abstraction that Week 2 will extend.}
+\end{frame}
+
+\end{document}

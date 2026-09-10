@@ -1,0 +1,237 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 150
+% CMPSC480_ITEM_IDS: 1,2,3,4,5,6,7,8,9,10
+\title[Final Examination Questions]{CMPSC 480 Comprehensive Final Examination}
+\subtitle{Weeks 1-15: methods, evidence, integration, and responsibility}
+\author{CMPSC 480 - Student Question Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Assessment overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large Solve applied, mathematical, algorithmic, and engineering problems under explicit assumptions.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: All modules with emphasis on machine learning, evaluation, fairness, deployment, and cross-module integration
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}150 total\end{block}
+\begin{block}{Expected time}180 minutes\end{block}
+\begin{block}{Submission}Individual examination PDF\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Learning objectives}
+\begin{itemize}
+  \item Compare and apply classical and adversarial search.
+  \item Reason about stochastic planning and reinforcement learning.
+  \item Perform Bayesian exact-inference operations.
+  \item Derive regression, classification, and backpropagation updates.
+  \item Design valid evaluation and hyperparameter protocols.
+  \item Analyze fairness and responsible deployment decisions.
+  \item Integrate methods through testable engineering contracts.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Requirements checklist}
+\small
+\begin{itemize}
+  \item Work independently and show intermediate algebra, frontier state, or factor state.
+  \item One double-sided handwritten letter-size reference sheet is permitted.
+  \item A nonprogrammable calculator is permitted; networked devices and communication are prohibited.
+  \item State every tie-breaking, terminal, reward, and zero-division convention you use.
+  \item Answers receive credit for justified reasoning; an unsupported final number may receive little credit.
+  \item Academic integrity rules of the course and institution apply throughout the examination.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Task 1 - Search and heuristic guarantees (15 points)}
+\small
+A* runs on a positive-cost graph with a heuristic that is admissible but not consistent.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] State admissibility and consistency formally. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Can graph-search A* remain optimal with this heuristic? State the needed implementation behavior. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Design a test that exposes missing reopening. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 2 - Adversarial reasoning (15 points)}
+\small
+A stochastic game node chooses action A with outcomes 8 and 0 at probabilities 0.25 and 0.75, or action B with guaranteed value 3.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute expectimax values and choose an action. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] What would a worst-case MIN interpretation choose for A, and why is that a different model? \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Give two tests for a combined minimax-expectimax implementation. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 3 - MDPs and reinforcement learning (15 points)}
+\small
+For Q(s,a)=2, reward=-1, gamma=0.9, max-next-Q=5, and alpha=0.1, compare one Q-learning update with a Bellman optimality backup.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute the Q-learning target, TD error, and updated Q. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] How would the terminal case differ? \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Compare information required by value iteration and Q-learning. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 4 - Bayesian inference (15 points)}
+\small
+A disease prior is 0.02, test sensitivity is 0.9, and false-positive rate is 0.1.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute P(disease|positive). \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Explain how variable elimination avoids repeated enumeration. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Compare rejection sampling with likelihood weighting for rare evidence. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 5 - Regression and gradient descent (15 points)}
+\small
+X=[[1,0],[1,1],[1,2]], y=[1,3,5], and w=[0,0] for one-half mean squared error.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute the initial residual and gradient. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] With alpha=0.1, compute the new weights. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Explain how feature scaling and collinearity affect optimization or solving. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 6 - Neural networks and backpropagation (15 points)}
+\small
+A layer has A\_prev shape (4,20), W shape (3,4), b shape (3,1), and delta shape (3,20).
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Give Z, A, dW, and db shapes. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Write the previous-layer delta formula and shape. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Describe a two-sided gradient check and one limitation. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 7 - Classification and regularization (15 points)}
+\small
+A binary classifier has logit z=log(4), label y=1, w=[3,4], lambda=0.5, and m=5.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute sigmoid(z) and cross-entropy loss. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Compute the L2 penalty and gradient addition. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Explain why threshold 0.5 is not universally optimal. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 8 - Evaluation and tuning (15 points)}
+\small
+A rare-event classifier yields TP=12, FP=8, FN=3, and TN=977.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute accuracy, precision, recall, and F1. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Training and validation error are both high and close. Diagnose and name one experiment. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Give a valid hyperparameter workflow with k-fold CV. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 9 - Fairness and responsible deployment (15 points)}
+\small
+Group A0 has TPR=0.85 and FPR=0.10; group A1 has TPR=0.65 and FPR=0.25. A production feature distribution then shifts.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute the equalized-odds gaps and interpret them. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Explain why removing the protected attribute alone does not establish fairness. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Specify a complete shift monitor and response. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 10 - Cross-module integration (15 points)}
+\small
+Design a system that combines a learned heuristic, Bayesian belief state, and a search or control policy for navigation under uncertain hazards.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Define the component handoffs. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] State three component or end-to-end tests. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Design a baseline, metrics, and limitation statement. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Edge cases and defensive programming}
+\small
+\begin{itemize}
+  \item A logistic probability is numerically zero.
+  \item A subgroup metric denominator is zero.
+  \item A ReLU check lands at zero.
+  \item A learned heuristic overestimates.
+  \item A production dependency fails during evaluation.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Submission instructions}
+\small
+\begin{itemize}
+  \item Write your name and identify every requested problem and subpart.
+  \item Show enough intermediate work that another reader can audit the result.
+  \item Submit the complete question-response document when time is called.
+\end{itemize}
+\vspace{0.2cm}
+\alert{Do not submit credentials, generated caches, or unapproved libraries.}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 1}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+Search and heuristic guarantees & 15 & Guarantee analysis, implementation rule, and counterexample reasoning. \\
+Adversarial reasoning & 15 & Expectimax calculation, minimax contrast, and engineering test. \\
+MDPs and reinforcement learning & 15 & Numeric update and planning-learning comparison. \\
+Bayesian inference & 15 & Posterior, factor reasoning, and approximate-inference choice. \\
+Regression and gradient descent & 15 & Gradient calculation, update, and conditioning analysis. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 2}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+Neural networks and backpropagation & 15 & Shape derivation, gradient formulas, and checking. \\
+Classification and regularization & 15 & Probability, loss, L2 penalty, and threshold interpretation. \\
+Evaluation and tuning & 15 & Metrics, curve diagnosis, and selection protocol. \\
+Fairness and responsible deployment & 15 & Disparity, criterion reasoning, and monitoring control. \\
+Cross-module integration & 15 & Architecture, verification, and responsible evidence plan. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection prompt}
+In one or two sentences:
+
+Name one connection among modules that changed how you would design or evaluate an AI system.
+\end{frame}
+
+\end{document}

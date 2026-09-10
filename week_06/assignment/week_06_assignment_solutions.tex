@@ -1,0 +1,155 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 10
+% CMPSC480_ITEM_IDS: 1,2,3,4
+\title[Week 6 Assignment Solutions]{Week 6 Assignment: Linear Q-Function Approximation}
+\subtitle{Feature design, semi-gradient updates, and stability evidence}
+\author{CMPSC 480 - Instructor Solution Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\vspace{-0.35cm}
+\begin{center}
+\color{coursered}\bfseries Instructor material - do not distribute with the question deck
+\end{center}
+\end{frame}
+
+\begin{frame}{Solution overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large This instructor deck provides a complete matched solution and grading guidance.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Week 6: function approximation, semi-gradients, and the deadly triad
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}10 total\end{block}
+\begin{block}{Expected time}6-8 hours\end{block}
+\begin{block}{Submission}Repository plus experiment memo\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Instructor verification checklist}
+\small
+\begin{itemize}
+  \item Use Python 3.11 and NumPy; do not use a library that implements the assessed algorithm.
+  \item Keep data, model, optimization, and evaluation responsibilities behind explicit interfaces.
+  \item Validate shapes, ranges, finite values, empty inputs, and terminal or degenerate cases.
+  \item Use deterministic seeds and record every configuration used for reported evidence.
+  \item Include focused tests and a README with exact reproduction commands.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Solution 1.a - Features and dimensions (1 points)}
+\small
+\textbf{Question focus.} Define at least four state-action features and justify their scales.
+
+\vspace{0.25cm}
+\answerlabel A full-credit design names each signal, such as normalized coordinates, goal distance, wall risk, and action alignment; all are finite and on comparable documented scales.
+\end{frame}
+
+\begin{frame}{Solution 1.b - Features and dimensions (1 points)}
+\small
+\textbf{Question focus.} Prove by an executable assertion that parameter size does not grow when the environment map grows.
+
+\vspace{0.25cm}
+\answerlabel Instantiate two map sizes with the same feature schema and assert equal feature and weight shapes. Reject any feature vector with a mismatched dimension.
+\end{frame}
+
+\begin{frame}{Solution 2.a - Linear values and policy (1 points)}
+\small
+\textbf{Question focus.} Compute Q-hat(s,a;w) and test a known vector by hand.
+
+\vspace{0.25cm}
+\answerlabel Return float(w dot f). For w=[1,-2,0.5] and f=[2,1,4], Q-hat=2-2+2=2.
+\end{frame}
+
+\begin{frame}{Solution 2.b - Linear values and policy (1 points)}
+\small
+\textbf{Question focus.} Specify training and evaluation tie behavior.
+
+\vspace{0.25cm}
+\answerlabel Training explores uniformly with probability epsilon and otherwise uses a stable argmax over legal actions. Evaluation sets epsilon to zero and uses the same documented stable tie order.
+\end{frame}
+
+\begin{frame}{Solution 3.a - Semi-gradient update (2 points)}
+\small
+\textbf{Question focus.} Derive the update from one-half times squared TD error.
+
+\vspace{0.25cm}
+\answerlabel With y treated as fixed, negative loss gradient is (y-Q-hat) grad Q-hat. For a linear function grad Q-hat=f, so w receives alpha times delta times f.
+\end{frame}
+
+\begin{frame}{Solution 3.b - Semi-gradient update (1 points)}
+\small
+\textbf{Question focus.} Compute an update for w=[0,0], f=[1,2], reward=1, gamma=0.5, max-next-Q=4, and alpha=0.1.
+
+\vspace{0.25cm}
+\answerlabel The target is 3, current Q is 0, delta is 3, and the new weights are [0.3,0.6].
+\end{frame}
+
+\begin{frame}{Solution 3.c - Semi-gradient update (1 points)}
+\small
+\textbf{Question focus.} State and test the terminal target.
+
+\vspace{0.25cm}
+\answerlabel When done is true, y equals reward with no next-state maximum. A test uses an enormous next Q and confirms the terminal update is unchanged.
+\end{frame}
+
+\begin{frame}{Solution 4.a - Experiment and stability (1 points)}
+\small
+\textbf{Question focus.} Run one feature ablation and compare with a tabular small-state oracle.
+
+\vspace{0.25cm}
+\answerlabel Hold seed, budget, and hyperparameters fixed; report return and action agreement. Explain whether the removed feature changes generalization or bias.
+\end{frame}
+
+\begin{frame}{Solution 4.b - Experiment and stability (1 points)}
+\small
+\textbf{Question focus.} Define an instability gate using at least three logged quantities.
+
+\vspace{0.25cm}
+\answerlabel A suitable gate watches nonfinite values, weight norm, TD-error quantiles, and evaluation return across seeds, and stops or flags the run when declared thresholds are exceeded.
+\end{frame}
+
+\begin{frame}{Edge-case reasoning and expected behavior}
+\small
+\begin{itemize}
+  \item The prediction is zero and no coordinate changes.
+  \item Target equals reward only.
+  \item Raise a clear error before the dot product.
+  \item Use stable evaluation order.
+  \item Stop, record the transition and configuration, and mark the run invalid.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Grading rubric}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Features and dimensions & 2 & Features are fixed length, normalized, documented, and safely validated. \\
+Linear values and policy & 2 & Dot product, legal-action filtering, probabilities, and ties are correct. \\
+Semi-gradient update & 4 & Target, TD error, gradient, terminal rule, and signs are correct. \\
+Experiment and stability & 2 & Controlled comparison includes return, TD error, parameter norm, and multiple seeds. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection exemplar}
+\small
+\answerlabel A strong response links feature overlap to which predictions changed, cites controlled evidence, and distinguishes improved return from stable value estimates.
+
+\vspace{0.25cm}
+\gradinglabel Award credit for a specific claim supported by technical evidence from the submitted work.
+\end{frame}
+
+\end{document}

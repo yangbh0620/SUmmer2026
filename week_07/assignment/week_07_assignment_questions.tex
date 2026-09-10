@@ -1,0 +1,166 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 20
+% CMPSC480_ITEM_IDS: 1,2,3,4,5
+\title[Module Project B Questions]{Week 7 Module Project B: Q-Learning with Bayesian Belief Tracking}
+\subtitle{Acting under partial observability with normalized posterior state}
+\author{CMPSC 480 - Student Question Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Assessment overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large Integrate a from-scratch Bayesian hazard belief with a Q-learning policy.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Weeks 4-7: MDPs, Q-learning, approximation, Bayes nets, and inference
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}20 total\end{block}
+\begin{block}{Expected time}10-14 hours\end{block}
+\begin{block}{Submission}Repository, evaluation report, and belief traces\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Learning objectives}
+\begin{itemize}
+  \item Update a categorical belief using Bayes rule.
+  \item Handle impossible or numerically tiny evidence defensively.
+  \item Expose belief summaries to a Q-learning state representation.
+  \item Train and evaluate under several sensor-noise regimes.
+  \item Ablate belief tracking against a nonbelief baseline.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Requirements checklist}
+\small
+\begin{itemize}
+  \item Use Python 3.11 and NumPy; do not use a library that implements the assessed algorithm.
+  \item Keep data, model, optimization, and evaluation responsibilities behind explicit interfaces.
+  \item Validate shapes, ranges, finite values, empty inputs, and terminal or degenerate cases.
+  \item Use deterministic seeds and record every configuration used for reported evidence.
+  \item Include focused tests and a README with exact reproduction commands.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Task 1 - Belief model (5 points)}
+\small
+Implement a categorical prior, sensor likelihood, and normalized posterior over candidate hazard locations.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Write the vectorized posterior update. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Hand compute prior [0.5,0.5] with likelihoods [0.8,0.2] for one observation. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{c.}] Define behavior when the normalization constant is zero or nonfinite. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 2 - RL agent (4 points)}
+\small
+Implement terminal-aware Q-learning using only information available to the agent.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Define the observable agent state and prove it excludes the true hidden hazard. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Specify epsilon-greedy selection and the terminal Q update. \hfill{\color{courseblue}\textbf{[2 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 3 - Integration contract (4 points)}
+\small
+Connect observations to posterior updates and posterior state to action selection.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] State the within-step order from observation to action to learning. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Test that reset restores the declared prior and clears episode-local state. \hfill{\color{courseblue}\textbf{[1 points]}}
+\item[\textbf{c.}] List every component needed to resume training exactly. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 4 - Noise study and ablation (4 points)}
+\small
+Evaluate policy safety and reward at low, medium, and high sensor noise.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Define safety and performance metrics and run multiple seeds. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Ablate the posterior input and interpret the difference. \hfill{\color{courseblue}\textbf{[2 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 5 - Defensive evidence (3 points)}
+\small
+Test belief and policy behavior on adversarial boundary cases.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Provide four tests and name the defect each exposes. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Explain why a high-noise posterior should remain closer to the prior. \hfill{\color{courseblue}\textbf{[1 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Edge cases and defensive programming}
+\small
+\begin{itemize}
+  \item Prior has a negative entry.
+  \item Evidence has zero likelihood under every hypothesis.
+  \item Sensor is completely uninformative.
+  \item Episode begins terminal.
+  \item True hidden state accidentally enters features.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Submission instructions}
+\small
+\begin{itemize}
+  \item Submit source, tests, README, configuration, and the requested report.
+  \item Provide one command that reproduces the primary result from a clean environment.
+  \item Exclude credentials, generated caches, and unlicensed data.
+\end{itemize}
+\vspace{0.2cm}
+\alert{Do not submit credentials, generated caches, or unapproved libraries.}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 1}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+Belief model & 5 & BeliefTracker, fixed-sequence oracle tests, and trace table. \\
+RL agent & 4 & Agent interface, update tests, and reproducible training loop. \\
+Integration contract & 4 & End-to-end sequence diagram, integration tests, and checkpoint serialization. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 2}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+Noise study and ablation & 4 & Controlled result table with belief and no-belief baselines. \\
+Defensive evidence & 3 & Focused tests and a short failure analysis. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection prompt}
+In 150-250 words:
+
+Describe one case where the belief was mathematically correct but the policy still behaved poorly. Separate inference error from control or learning error.
+\end{frame}
+
+\end{document}

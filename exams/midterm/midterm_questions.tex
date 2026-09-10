@@ -1,0 +1,197 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 100
+% CMPSC480_ITEM_IDS: 1,2,3,4,5,6,7
+\title[Midterm Questions]{CMPSC 480 Midterm Examination}
+\subtitle{Cumulative assessment of Weeks 1-7}
+\author{CMPSC 480 - Student Question Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Assessment overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large Solve applied, mathematical, algorithmic, and engineering problems under explicit assumptions.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Modules A and B: agents, search, adversarial reasoning, MDPs, RL, approximation, and Bayesian inference
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}100 total\end{block}
+\begin{block}{Expected time}110 minutes\end{block}
+\begin{block}{Submission}Individual examination PDF\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Learning objectives}
+\begin{itemize}
+  \item Formulate agent and search problems precisely.
+  \item Trace cost-sensitive and adversarial algorithms.
+  \item Apply Bellman and temporal-difference updates.
+  \item Reason about function approximation stability.
+  \item Compute Bayesian posteriors and factor operations.
+  \item Integrate methods while preserving assumptions.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Requirements checklist}
+\small
+\begin{itemize}
+  \item Work independently and show intermediate algebra, frontier state, or factor state.
+  \item One double-sided handwritten letter-size reference sheet is permitted.
+  \item A nonprogrammable calculator is permitted; networked devices and communication are prohibited.
+  \item State every tie-breaking, terminal, reward, and zero-division convention you use.
+  \item Answers receive credit for justified reasoning; an unsupported final number may receive little credit.
+  \item Academic integrity rules of the course and institution apply throughout the examination.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Task 1 - Agent and search formulation (10 points)}
+\small
+A delivery robot operates in a partially mapped building with battery limits and moving people.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Give one concrete element for each PEAS component. \hfill{\color{courseblue}\textbf{[3 points]}}
+\item[\textbf{b.}] Define states, actions, transition model, goal test, and path cost for deterministic route planning. \hfill{\color{courseblue}\textbf{[3 points]}}
+\item[\textbf{c.}] Explain why rational behavior does not imply omniscience and name two defensive interface checks. \hfill{\color{courseblue}\textbf{[4 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 2 - UCS and A-star (15 points)}
+\small
+Graph edges are S-A:4, S-B:1, B-A:1, A-G:3, and B-G:8. Heuristic values are h(S)=5, h(A)=3, h(B)=4, h(G)=0.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Trace UCS until a goal is removed, including cheaper rediscovery. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Trace A-star priorities and return the selected path. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Is the heuristic admissible and consistent? Justify from the graph. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 3 - Minimax and alpha-beta (15 points)}
+\small
+A MAX root has MIN children A, B, and C. Their leaves in search order are A:[6,4], B:[3,8], C:[5,2].
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute every minimax value and the selected action. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Trace alpha-beta left to right and identify pruned leaves. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Design a depth-cutoff evaluation with three features and state two tests. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 4 - MDP planning (15 points)}
+\small
+At state s, action a reaches terminal reward 5 with probability 0.8 and state t with reward 0 and probability 0.2. Let gamma=0.9 and V(t)=2. Action b deterministically yields reward 3 and terminates.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute Q(s,a) under reward-on-transition semantics. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Compute Q(s,b) and the greedy action. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Explain why value iteration converges for a finite discounted MDP. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 5 - Q-learning and approximation (15 points)}
+\small
+A linear agent has w=[0.5,-0.5], f(s,a)=[1,2], reward 2, gamma=0.5, max next Q=3, and alpha=0.2.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute current Q, target, TD error, and new weights. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Recompute the update if the transition is terminal. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] Name the deadly triad and two observable instability signals. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 6 - Bayesian networks and inference (15 points)}
+\small
+R is a binary root with P(R)=0.2. S depends on R with P(S|R)=0.1 and P(S|not R)=0.5. W depends on both with P(W|R,S)=0.99 and P(W|R,not S)=0.8.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Compute P(R,S,W) for all three true. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Write an exact expression for P(R|W) without evaluating missing CPT rows. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] If factors f(R,S) and g(S,W) are multiplied and S is summed out, what is the result scope and why can order matter? \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 7 - Integrated engineering scenario (15 points)}
+\small
+A robot uses a Bayesian belief over hazards as features for a linear Q-learning policy.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Specify the belief-to-policy interface and three invariants. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{b.}] Design a controlled ablation showing whether belief tracking helps. \hfill{\color{courseblue}\textbf{[5 points]}}
+\item[\textbf{c.}] State a response to impossible evidence and a posttraining safety gate. \hfill{\color{courseblue}\textbf{[5 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Edge cases and defensive programming}
+\small
+\begin{itemize}
+  \item A start state is already a goal.
+  \item All minimax root actions tie.
+  \item A terminal RL transition has a large next Q.
+  \item Bayesian evidence has zero probability.
+  \item A factor order creates an unexpectedly large table.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Submission instructions}
+\small
+\begin{itemize}
+  \item Write your name and identify every requested problem and subpart.
+  \item Show enough intermediate work that another reader can audit the result.
+  \item Submit the complete question-response document when time is called.
+\end{itemize}
+\vspace{0.2cm}
+\alert{Do not submit credentials, generated caches, or unapproved libraries.}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 1}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+Agent and search formulation & 10 & PEAS analysis, search model, and engineering contract. \\
+UCS and A-star & 15 & Priority trace, optimal path, and heuristic argument. \\
+Minimax and alpha-beta & 15 & Minimax backups, pruning trace, and evaluation design. \\
+MDP planning & 15 & Bellman values, policy choice, and convergence reasoning. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Grading rubric - part 2}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+Q-learning and approximation & 15 & Semi-gradient update, terminal change, and stability analysis. \\
+Bayesian networks and inference & 15 & Joint probability, posterior structure, and factor operation. \\
+Integrated engineering scenario & 15 & Interface, ablation, and safety verification plan. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection prompt}
+In one or two sentences:
+
+Identify one assumption that changed the answer to a problem.
+\end{frame}
+
+\end{document}

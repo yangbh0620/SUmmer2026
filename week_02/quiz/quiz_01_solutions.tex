@@ -1,0 +1,160 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 20
+% CMPSC480_ITEM_IDS: 1,2,3,4
+\title[Quiz 1 Solutions]{Quiz 1: Agents and Search}
+\subtitle{Weeks 1-2}
+\author{CMPSC 480 - Instructor Solution Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\vspace{-0.35cm}
+\begin{center}
+\color{coursered}\bfseries Instructor material - do not distribute with the question deck
+\end{center}
+\end{frame}
+
+\begin{frame}{Solution overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large This instructor deck provides a complete matched solution and grading guidance.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Weeks 1-2
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}20 total\end{block}
+\begin{block}{Expected time}30 minutes\end{block}
+\begin{block}{Submission}Individual PDF\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Instructor verification checklist}
+\small
+\begin{itemize}
+  \item Work independently.
+  \item Show intermediate frontier or arithmetic steps.
+  \item State every assumption used for a guarantee.
+  \item No electronic communication.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Solution 1.a - Agent formulation (2 points)}
+\small
+\textbf{Question focus.} Give one element for each PEAS component.
+
+\vspace{0.25cm}
+\answerlabel Performance: timely collision-free deliveries; environment: aisles, shelves, people, and stations; actuators: wheel and lift commands; sensors: lidar, odometry, and task messages.
+\end{frame}
+
+\begin{frame}{Solution 1.b - Agent formulation (2 points)}
+\small
+\textbf{Question focus.} Explain why rational does not mean omniscient.
+
+\vspace{0.25cm}
+\answerlabel A rational agent maximizes expected performance from its percept history and knowledge. It can still fail because observations and outcomes are uncertain; omniscience would require knowing actual future consequences.
+\end{frame}
+
+\begin{frame}{Solution 2.a - BFS and DFS trace (2 points)}
+\small
+\textbf{Question focus.} Trace BFS until a goal is removed.
+
+\vspace{0.25cm}
+\answerlabel FIFO trace: [S], then [A,B], then [B,G], then [G,C], then remove G. The returned path is S-A-G.
+\end{frame}
+
+\begin{frame}{Solution 2.b - BFS and DFS trace (2 points)}
+\small
+\textbf{Question focus.} Trace DFS when successors are pushed in alphabetical order.
+
+\vspace{0.25cm}
+\answerlabel After pushing A then B, LIFO removes B, then C, then G; it can return S-B-C-G. A different documented push convention earns credit if traced consistently.
+\end{frame}
+
+\begin{frame}{Solution 3.a - Cost-sensitive search (2 points)}
+\small
+\textbf{Question focus.} Which route can BFS return, and why is that not a minimum-cost guarantee?
+
+\vspace{0.25cm}
+\answerlabel BFS returns the depth-two route S-A-G with cost 6, because it minimizes depth under FIFO order rather than nonuniform path cost.
+\end{frame}
+
+\begin{frame}{Solution 3.b - Cost-sensitive search (2 points)}
+\small
+\textbf{Question focus.} Trace UCS priorities until the goal is removed.
+
+\vspace{0.25cm}
+\answerlabel UCS removes S(0), B(1), C(2), G(3), and returns S-B-C-G with cost 3.
+\end{frame}
+
+\begin{frame}{Solution 3.c - Cost-sensitive search (2 points)}
+\small
+\textbf{Question focus.} State conditions under which UCS is complete and optimal.
+
+\vspace{0.25cm}
+\answerlabel With finite branching and step costs bounded below by a positive epsilon, UCS is complete and removes an optimal goal first.
+\end{frame}
+
+\begin{frame}{Solution 4.a - A-star heuristic (2 points)}
+\small
+\textbf{Question focus.} Define f, g, and h in A-star.
+
+\vspace{0.25cm}
+\answerlabel g is accumulated path cost, h estimates optimal remaining cost, and f=g+h orders the frontier.
+\end{frame}
+
+\begin{frame}{Solution 4.b - A-star heuristic (2 points)}
+\small
+\textbf{Question focus.} Prove Manhattan distance is consistent.
+
+\vspace{0.25cm}
+\answerlabel A legal step costs one and changes Manhattan distance by at most one, hence h(n) is at most 1+h(n-prime) for every edge.
+\end{frame}
+
+\begin{frame}{Solution 4.c - A-star heuristic (2 points)}
+\small
+\textbf{Question focus.} If two nodes have (g,h)=(4,3) and (5,1), which is removed first?
+
+\vspace{0.25cm}
+\answerlabel Their f values are 7 and 6, so the second node is removed first, subject only to stale-entry handling and ties.
+\end{frame}
+
+\begin{frame}{Edge-case reasoning and expected behavior}
+\small
+\begin{itemize}
+  \item Return the empty path.
+  \item Use graph-search bookkeeping to terminate.
+  \item Apply the stated deterministic secondary key.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Grading rubric}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Full-credit evidence \\
+\midrule
+Agent formulation & 4 & PEAS and rationality are precise. \\
+BFS and DFS trace & 4 & FIFO/LIFO order and trace are correct. \\
+Cost-sensitive search & 6 & Depth/cost distinction and UCS update are correct. \\
+A-star heuristic & 6 & Admissibility, consistency, and f values are correct. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection exemplar}
+\small
+\answerlabel A suitable answer identifies finite branching, uniform costs for BFS optimality, or a positive lower bound on step cost for UCS, with the relevant algorithm named.
+
+\vspace{0.25cm}
+\gradinglabel Award credit for a specific claim supported by technical evidence from the submitted work.
+\end{frame}
+
+\end{document}

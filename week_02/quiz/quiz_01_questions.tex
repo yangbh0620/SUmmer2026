@@ -1,0 +1,140 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{../../../shared/cmpsc480_beamer.tex}
+
+% CMPSC480_TOTAL_POINTS: 20
+% CMPSC480_ITEM_IDS: 1,2,3,4
+\title[Quiz 1 Questions]{Quiz 1: Agents and Search}
+\subtitle{Weeks 1-2}
+\author{CMPSC 480 - Student Question Deck}
+\date{}
+
+\begin{document}
+
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Assessment overview}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.62\textwidth}
+\Large Demonstrate concise reasoning about agent models and classical search guarantees.
+
+\vspace{0.35cm}
+\normalsize
+Coverage: Weeks 1-2
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{Points}20 total\end{block}
+\begin{block}{Expected time}30 minutes\end{block}
+\begin{block}{Submission}Individual PDF\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Learning objectives}
+\begin{itemize}
+  \item Apply PEAS and search formulation.
+  \item Trace frontier order.
+  \item Compare guarantees.
+  \item Reason about admissible heuristics.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Requirements checklist}
+\small
+\begin{itemize}
+  \item Work independently.
+  \item Show intermediate frontier or arithmetic steps.
+  \item State every assumption used for a guarantee.
+  \item No electronic communication.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Task 1 - Agent formulation (4 points)}
+\small
+Analyze a warehouse-routing agent.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Give one element for each PEAS component. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Explain why rational does not mean omniscient. \hfill{\color{courseblue}\textbf{[2 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 2 - BFS and DFS trace (4 points)}
+\small
+Successors are generated alphabetically. S connects to A and B; A to G; B to C; C to G.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Trace BFS until a goal is removed. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Trace DFS when successors are pushed in alphabetical order. \hfill{\color{courseblue}\textbf{[2 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 3 - Cost-sensitive search (6 points)}
+\small
+Two routes reach a goal: S-A-G costs 5+1, and S-B-C-G costs 1+1+1.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Which route can BFS return, and why is that not a minimum-cost guarantee? \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Trace UCS priorities until the goal is removed. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{c.}] State conditions under which UCS is complete and optimal. \hfill{\color{courseblue}\textbf{[2 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Task 4 - A-star heuristic (6 points)}
+\small
+A four-neighbor grid uses unit costs and Manhattan distance.
+
+\vspace{0.2cm}
+\begin{enumerate}
+\item[\textbf{a.}] Define f, g, and h in A-star. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{b.}] Prove Manhattan distance is consistent. \hfill{\color{courseblue}\textbf{[2 points]}}
+\item[\textbf{c.}] If two nodes have (g,h)=(4,3) and (5,1), which is removed first? \hfill{\color{courseblue}\textbf{[2 points]}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Edge cases and defensive programming}
+\small
+\begin{itemize}
+  \item A start state is already a goal.
+  \item A graph contains a cycle.
+  \item Two A-star nodes have equal f.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Submission instructions}
+\small
+\begin{itemize}
+  \item Write your name and assumptions.
+  \item Show work for traces and arithmetic.
+  \item Submit only the question-response PDF.
+\end{itemize}
+\vspace{0.2cm}
+\alert{Do not submit credentials, generated caches, or unapproved libraries.}
+\end{frame}
+
+\begin{frame}{Grading rubric}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth} p{0.08\textwidth} X}
+\toprule
+Category & Points & Required evidence \\
+\midrule
+Agent formulation & 4 & Written responses. \\
+BFS and DFS trace & 4 & Frontier trace and returned paths. \\
+Cost-sensitive search & 6 & Algorithm choice and cost trace. \\
+A-star heuristic & 6 & Proof sketch and comparison. \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Reflection prompt}
+In one sentence:
+
+Name the assumption most often omitted when stating a search guarantee.
+\end{frame}
+
+\end{document}
