@@ -1,0 +1,827 @@
+{
+  "course": "CMPSC 480 - AI Curriculum Engineering",
+  "generated_at_utc": "2026-07-27T11:28:02.802393+00:00",
+  "workspace": "course prompts - CMPSC480",
+  "status": "PASS",
+  "checks_passed": 40,
+  "checks_total": 40,
+  "checks": [
+    {
+      "name": "artifact_count:lecture_pptx",
+      "status": "PASS",
+      "detail": "expected=27; actual=27"
+    },
+    {
+      "name": "artifact_count:lecture_pdf",
+      "status": "PASS",
+      "detail": "expected=27; actual=27"
+    },
+    {
+      "name": "artifact_count:video_scripts",
+      "status": "PASS",
+      "detail": "expected=27; actual=27"
+    },
+    {
+      "name": "artifact_count:assignment_question_tex",
+      "status": "PASS",
+      "detail": "expected=15; actual=15"
+    },
+    {
+      "name": "artifact_count:assignment_question_pdf",
+      "status": "PASS",
+      "detail": "expected=15; actual=15"
+    },
+    {
+      "name": "artifact_count:assignment_solution_tex",
+      "status": "PASS",
+      "detail": "expected=15; actual=15"
+    },
+    {
+      "name": "artifact_count:assignment_solution_pdf",
+      "status": "PASS",
+      "detail": "expected=15; actual=15"
+    },
+    {
+      "name": "artifact_count:quiz_question_tex",
+      "status": "PASS",
+      "detail": "expected=5; actual=5"
+    },
+    {
+      "name": "artifact_count:quiz_question_pdf",
+      "status": "PASS",
+      "detail": "expected=5; actual=5"
+    },
+    {
+      "name": "artifact_count:quiz_solution_tex",
+      "status": "PASS",
+      "detail": "expected=5; actual=5"
+    },
+    {
+      "name": "artifact_count:quiz_solution_pdf",
+      "status": "PASS",
+      "detail": "expected=5; actual=5"
+    },
+    {
+      "name": "artifact_count:exam_question_tex",
+      "status": "PASS",
+      "detail": "expected=2; actual=2"
+    },
+    {
+      "name": "artifact_count:exam_question_pdf",
+      "status": "PASS",
+      "detail": "expected=2; actual=2"
+    },
+    {
+      "name": "artifact_count:exam_solution_tex",
+      "status": "PASS",
+      "detail": "expected=2; actual=2"
+    },
+    {
+      "name": "artifact_count:exam_solution_pdf",
+      "status": "PASS",
+      "detail": "expected=2; actual=2"
+    },
+    {
+      "name": "weekly_unit:week_01",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_02",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_03",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_04",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_05",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_06",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_07",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_08",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_09",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_10",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_11",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_12",
+      "status": "PASS",
+      "detail": "lectures=2/2; scripts=2/2; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_13",
+      "status": "PASS",
+      "detail": "lectures=1/1; scripts=1/1; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_14",
+      "status": "PASS",
+      "detail": "lectures=1/1; scripts=1/1; assignment_pair=True"
+    },
+    {
+      "name": "weekly_unit:week_15",
+      "status": "PASS",
+      "detail": "lectures=1/1; scripts=1/1; assignment_pair=True"
+    },
+    {
+      "name": "no_video_or_audio",
+      "status": "PASS",
+      "detail": "no generated video or audio files"
+    },
+    {
+      "name": "generated_filenames",
+      "status": "PASS",
+      "detail": "all generated filenames are English, space-free, and lowercase (except required course-level document names)"
+    },
+    {
+      "name": "english_only_cjk_scan",
+      "status": "PASS",
+      "detail": "zero CJK characters in generated text and PPTX XML"
+    },
+    {
+      "name": "placeholder_scan",
+      "status": "PASS",
+      "detail": "zero TODO, TBD, or Lorem ipsum placeholders"
+    },
+    {
+      "name": "lecture_package_integrity",
+      "status": "PASS",
+      "detail": "27 PPTX archives open; 16:9 geometry, slide/PDF/script counts, source-note blocks, pacing cues, and narration lengths agree"
+    },
+    {
+      "name": "assessment_pair_integrity",
+      "status": "PASS",
+      "detail": "22 question/solution pairs have identical totals, task IDs, subquestion IDs, subquestion points, and valid PDF page counts"
+    },
+    {
+      "name": "student_solution_separation",
+      "status": "PASS",
+      "detail": "zero instructor-answer markers in all 22 student question sources"
+    },
+    {
+      "name": "latex_log_scan",
+      "status": "PASS",
+      "detail": "zero errors, unresolved references, overfull boxes, or underfull boxes"
+    },
+    {
+      "name": "latex_assets",
+      "status": "PASS",
+      "detail": "all referenced LaTeX assets exist"
+    },
+    {
+      "name": "course_level_documents",
+      "status": "PASS",
+      "detail": "all required workflow and course-level documents exist"
+    }
+  ],
+  "metrics": {
+    "artifact_counts": {
+      "lecture_pptx": 27,
+      "lecture_pdf": 27,
+      "video_scripts": 27,
+      "assignment_question_tex": 15,
+      "assignment_question_pdf": 15,
+      "assignment_solution_tex": 15,
+      "assignment_solution_pdf": 15,
+      "quiz_question_tex": 5,
+      "quiz_question_pdf": 5,
+      "quiz_solution_tex": 5,
+      "quiz_solution_pdf": 5,
+      "exam_question_tex": 2,
+      "exam_question_pdf": 2,
+      "exam_solution_tex": 2,
+      "exam_solution_pdf": 2
+    },
+    "lecture_decks": [
+      {
+        "deck": "units/week_01/lectures/week_01_lesson_01_ai_engineering_mindset.pptx",
+        "slides": 19,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 19,
+        "notes": 19,
+        "notes_with_sources": 19,
+        "script_slides": 19,
+        "script_words": 3202
+      },
+      {
+        "deck": "units/week_01/lectures/week_01_lesson_02_rational_agents_and_search.pptx",
+        "slides": 22,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 22,
+        "notes": 22,
+        "notes_with_sources": 22,
+        "script_slides": 22,
+        "script_words": 3640
+      },
+      {
+        "deck": "units/week_02/lectures/week_02_lesson_01_uninformed_search.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 3081
+      },
+      {
+        "deck": "units/week_02/lectures/week_02_lesson_02_informed_search_and_heuristics.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2948
+      },
+      {
+        "deck": "units/week_03/lectures/week_03_lesson_01_adversarial_search_minimax.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2925
+      },
+      {
+        "deck": "units/week_03/lectures/week_03_lesson_02_alpha_beta_and_expectimax.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2878
+      },
+      {
+        "deck": "units/week_04/lectures/week_04_lesson_01_mdp_formulation.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2888
+      },
+      {
+        "deck": "units/week_04/lectures/week_04_lesson_02_value_and_policy_iteration.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2908
+      },
+      {
+        "deck": "units/week_05/lectures/week_05_lesson_01_reinforcement_learning_fundamentals.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2837
+      },
+      {
+        "deck": "units/week_05/lectures/week_05_lesson_02_q_learning.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2876
+      },
+      {
+        "deck": "units/week_06/lectures/week_06_lesson_01_function_approximation.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2934
+      },
+      {
+        "deck": "units/week_06/lectures/week_06_lesson_02_intro_to_deep_q_networks.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2924
+      },
+      {
+        "deck": "units/week_07/lectures/week_07_lesson_01_probability_review_and_bayesian_networks.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2902
+      },
+      {
+        "deck": "units/week_07/lectures/week_07_lesson_02_inference_in_bayesian_networks.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2889
+      },
+      {
+        "deck": "units/week_08/lectures/week_08_lesson_01_linear_regression_from_scratch.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2822
+      },
+      {
+        "deck": "units/week_08/lectures/week_08_lesson_02_gradient_descent_and_vectorization.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2843
+      },
+      {
+        "deck": "units/week_09/lectures/week_09_lesson_01_neural_network_architecture.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2835
+      },
+      {
+        "deck": "units/week_09/lectures/week_09_lesson_02_backpropagation_from_scratch.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2862
+      },
+      {
+        "deck": "units/week_10/lectures/week_10_lesson_01_classification_and_logistic_regression.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2784
+      },
+      {
+        "deck": "units/week_10/lectures/week_10_lesson_02_overfitting_and_regularization.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2843
+      },
+      {
+        "deck": "units/week_11/lectures/week_11_lesson_01_model_evaluation_metrics.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2843
+      },
+      {
+        "deck": "units/week_11/lectures/week_11_lesson_02_hyperparameter_tuning.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2839
+      },
+      {
+        "deck": "units/week_12/lectures/week_12_lesson_01_bias_and_fairness_in_ai_systems.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2955
+      },
+      {
+        "deck": "units/week_12/lectures/week_12_lesson_02_responsible_ai_deployment.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2917
+      },
+      {
+        "deck": "units/week_13/lectures/week_13_lesson_01_cross_module_integration_review.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2962
+      },
+      {
+        "deck": "units/week_14/lectures/week_14_lesson_01_final_project_kickoff_and_design.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2896
+      },
+      {
+        "deck": "units/week_15/lectures/week_15_lesson_01_final_project_showcase_and_course_synthesis.pptx",
+        "slides": 18,
+        "aspect_ratio": 1.777778,
+        "pdf_pages": 18,
+        "notes": 18,
+        "notes_with_sources": 18,
+        "script_slides": 18,
+        "script_words": 2884
+      }
+    ],
+    "assessment_pairs": [
+      {
+        "questions": "exams/final/final_exam_questions.tex",
+        "solutions": "exams/final/final_exam_solutions.tex",
+        "total_points": 150,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "matched_subquestions": 30,
+        "question_pages": 19,
+        "solution_pages": 37
+      },
+      {
+        "questions": "exams/midterm/midterm_questions.tex",
+        "solutions": "exams/midterm/midterm_solutions.tex",
+        "total_points": 100,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "matched_subquestions": 21,
+        "question_pages": 16,
+        "solution_pages": 28
+      },
+      {
+        "questions": "units/week_01/assignment/week_01_assignment_questions.tex",
+        "solutions": "units/week_01/assignment/week_01_assignment_solutions.tex",
+        "total_points": 10,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 4,
+        "question_pages": 19,
+        "solution_pages": 27
+      },
+      {
+        "questions": "units/week_02/assignment/week_02_assignment_questions.tex",
+        "solutions": "units/week_02/assignment/week_02_assignment_solutions.tex",
+        "total_points": 10,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 10,
+        "question_pages": 13,
+        "solution_pages": 16
+      },
+      {
+        "questions": "units/week_02/quiz/quiz_01_questions.tex",
+        "solutions": "units/week_02/quiz/quiz_01_solutions.tex",
+        "total_points": 20,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 10,
+        "question_pages": 12,
+        "solution_pages": 16
+      },
+      {
+        "questions": "units/week_03/assignment/week_03_assignment_questions.tex",
+        "solutions": "units/week_03/assignment/week_03_assignment_solutions.tex",
+        "total_points": 20,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "matched_subquestions": 16,
+        "question_pages": 15,
+        "solution_pages": 23
+      },
+      {
+        "questions": "units/week_04/assignment/week_04_assignment_questions.tex",
+        "solutions": "units/week_04/assignment/week_04_assignment_solutions.tex",
+        "total_points": 10,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 10,
+        "question_pages": 12,
+        "solution_pages": 16
+      },
+      {
+        "questions": "units/week_05/assignment/week_05_assignment_questions.tex",
+        "solutions": "units/week_05/assignment/week_05_assignment_solutions.tex",
+        "total_points": 10,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 10,
+        "question_pages": 12,
+        "solution_pages": 16
+      },
+      {
+        "questions": "units/week_05/quiz/quiz_02_questions.tex",
+        "solutions": "units/week_05/quiz/quiz_02_solutions.tex",
+        "total_points": 20,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 10,
+        "question_pages": 12,
+        "solution_pages": 16
+      },
+      {
+        "questions": "units/week_06/assignment/week_06_assignment_questions.tex",
+        "solutions": "units/week_06/assignment/week_06_assignment_solutions.tex",
+        "total_points": 10,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 9,
+        "question_pages": 12,
+        "solution_pages": 15
+      },
+      {
+        "questions": "units/week_07/assignment/week_07_assignment_questions.tex",
+        "solutions": "units/week_07/assignment/week_07_assignment_solutions.tex",
+        "total_points": 20,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "matched_subquestions": 12,
+        "question_pages": 14,
+        "solution_pages": 19
+      },
+      {
+        "questions": "units/week_08/assignment/week_08_assignment_questions.tex",
+        "solutions": "units/week_08/assignment/week_08_assignment_solutions.tex",
+        "total_points": 10,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 9,
+        "question_pages": 12,
+        "solution_pages": 15
+      },
+      {
+        "questions": "units/week_09/assignment/week_09_assignment_questions.tex",
+        "solutions": "units/week_09/assignment/week_09_assignment_solutions.tex",
+        "total_points": 10,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 9,
+        "question_pages": 12,
+        "solution_pages": 15
+      },
+      {
+        "questions": "units/week_09/quiz/quiz_03_questions.tex",
+        "solutions": "units/week_09/quiz/quiz_03_solutions.tex",
+        "total_points": 20,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "matched_subquestions": 10,
+        "question_pages": 14,
+        "solution_pages": 17
+      },
+      {
+        "questions": "units/week_10/assignment/week_10_assignment_questions.tex",
+        "solutions": "units/week_10/assignment/week_10_assignment_solutions.tex",
+        "total_points": 10,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 9,
+        "question_pages": 12,
+        "solution_pages": 15
+      },
+      {
+        "questions": "units/week_11/assignment/week_11_assignment_questions.tex",
+        "solutions": "units/week_11/assignment/week_11_assignment_solutions.tex",
+        "total_points": 10,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 9,
+        "question_pages": 12,
+        "solution_pages": 15
+      },
+      {
+        "questions": "units/week_11/quiz/quiz_04_questions.tex",
+        "solutions": "units/week_11/quiz/quiz_04_solutions.tex",
+        "total_points": 20,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "matched_subquestions": 10,
+        "question_pages": 14,
+        "solution_pages": 17
+      },
+      {
+        "questions": "units/week_12/assignment/week_12_assignment_questions.tex",
+        "solutions": "units/week_12/assignment/week_12_assignment_solutions.tex",
+        "total_points": 20,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "matched_subquestions": 12,
+        "question_pages": 14,
+        "solution_pages": 19
+      },
+      {
+        "questions": "units/week_13/assignment/week_13_assignment_questions.tex",
+        "solutions": "units/week_13/assignment/week_13_assignment_solutions.tex",
+        "total_points": 10,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 10,
+        "question_pages": 12,
+        "solution_pages": 16
+      },
+      {
+        "questions": "units/week_13/quiz/quiz_05_questions.tex",
+        "solutions": "units/week_13/quiz/quiz_05_solutions.tex",
+        "total_points": 20,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "matched_subquestions": 10,
+        "question_pages": 14,
+        "solution_pages": 17
+      },
+      {
+        "questions": "units/week_14/assignment/week_14_assignment_questions.tex",
+        "solutions": "units/week_14/assignment/week_14_assignment_solutions.tex",
+        "total_points": 10,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "matched_subquestions": 8,
+        "question_pages": 12,
+        "solution_pages": 14
+      },
+      {
+        "questions": "units/week_15/assignment/week_15_assignment_questions.tex",
+        "solutions": "units/week_15/assignment/week_15_assignment_solutions.tex",
+        "total_points": 100,
+        "task_ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "matched_subquestions": 13,
+        "question_pages": 14,
+        "solution_pages": 20
+      }
+    ]
+  }
+}
